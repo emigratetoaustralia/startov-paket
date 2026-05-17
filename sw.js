@@ -1,5 +1,5 @@
-// Стартов пакет — Service Worker v0.2
-const CACHE = 'startov-paket-v0.2';
+// Стартов пакет — Service Worker v0.3
+const CACHE = 'startov-paket-v0.3';
 const FILES = [
   '/startov-paket/',
   '/startov-paket/index.html',
