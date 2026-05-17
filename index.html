@@ -83,7 +83,138 @@
     letter-spacing: 0.04em;
   }
 
-  /* ============ NAME GATE ============ */
+  /* ============ PASSWORD GATE OVERLAY ============ */
+  #pw-gate {
+    position: fixed;
+    inset: 0;
+    background: var(--paper);
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px 20px;
+  }
+  #pw-gate.hidden { display: none; }
+  .pw-card {
+    background: white;
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    padding: 32px 28px;
+    max-width: 460px;
+    width: 100%;
+    box-shadow: 0 2px 16px rgba(0,0,0,0.06);
+  }
+  .pw-kicker {
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--orange);
+    font-weight: 700;
+    margin-bottom: 10px;
+  }
+  .pw-card h2 {
+    font-size: 24px;
+    margin: 0 0 6px;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    line-height: 1.2;
+  }
+  .pw-card .pw-tagline {
+    font-size: 14px;
+    color: var(--ink-soft);
+    font-style: italic;
+    margin: 0 0 24px;
+  }
+  .pw-field {
+    margin-bottom: 16px;
+  }
+  .pw-field label {
+    display: block;
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    font-weight: 600;
+    color: var(--blue);
+    margin-bottom: 6px;
+  }
+  .pw-field input {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid var(--line);
+    border-radius: 3px;
+    font-family: Georgia, serif;
+    font-size: 16px;
+    background: var(--paper);
+    color: var(--ink);
+    transition: border-color 0.15s;
+  }
+  .pw-field input:focus {
+    outline: none;
+    border-color: var(--blue);
+    background: white;
+  }
+  .pw-agreement {
+    background: var(--paper-warm);
+    border-left: 3px solid var(--line);
+    padding: 14px 16px;
+    margin: 20px 0 16px;
+    border-radius: 0 3px 3px 0;
+    font-size: 13px;
+    color: var(--ink-soft);
+    line-height: 1.6;
+  }
+  .pw-agreement p { margin: 0 0 8px; }
+  .pw-agreement p:last-child { margin: 0; }
+  .pw-checkbox-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    margin-bottom: 20px;
+    cursor: pointer;
+  }
+  .pw-checkbox-row input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    margin-top: 1px;
+    flex-shrink: 0;
+    cursor: pointer;
+    accent-color: var(--blue);
+  }
+  .pw-checkbox-row span {
+    font-size: 13px;
+    color: var(--ink-soft);
+    line-height: 1.45;
+  }
+  .pw-error {
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    font-size: 12px;
+    color: var(--red);
+    margin-bottom: 12px;
+    display: none;
+    letter-spacing: 0.02em;
+  }
+  .pw-error.visible { display: block; }
+  .pw-submit {
+    width: 100%;
+    padding: 12px;
+    background: var(--blue);
+    color: white;
+    border: none;
+    border-radius: 3px;
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: background 0.15s, opacity 0.15s;
+  }
+  .pw-submit:hover:not(:disabled) { background: #013d7a; }
+  .pw-submit:disabled { opacity: 0.4; cursor: default; }
+
+  /* ============ NAME GATE (inline, shown after pw gate) ============ */
   .name-gate {
     background: var(--paper-warm);
     border-left: 4px solid var(--orange);
@@ -674,7 +805,7 @@
   @media print {
     body { background: white; font-size: 11pt; }
     .wrap { max-width: 100%; padding: 0; }
-    .name-gate, .arrival-row, .actions, .item-personal-toggle, .data-controls { display: none !important; }
+    #pw-gate, .name-gate, .arrival-row, .actions, .item-personal-toggle, .data-controls { display: none !important; }
     .phase-body { display: block !important; }
     .phase-toggle-btn { cursor: default; }
     .item-personal.open { display: block !important; }
@@ -714,6 +845,41 @@
 </style>
 </head>
 <body>
+
+<!-- =================== PASSWORD GATE =================== -->
+<div id="pw-gate">
+  <div class="pw-card">
+    <div class="pw-kicker">Емигрирай в Австралия · Стартов пакет</div>
+    <h2>Първите 30 дни в Пърт</h2>
+    <p class="pw-tagline">Контролен списък за новите мигранти в Пърт</p>
+
+    <div class="pw-field">
+      <label for="pw-name">Как да ти викам?</label>
+      <input type="text" id="pw-name" placeholder="Иван, Мария, Здравко..." maxlength="30" autocomplete="name">
+    </div>
+
+    <div class="pw-field">
+      <label for="pw-input">Парола за достъп</label>
+      <input type="password" id="pw-input" placeholder="Въведи паролата от имейла" autocomplete="current-password">
+    </div>
+
+    <div class="pw-agreement">
+      <p>Добре дошъл в Стартов пакет. Това е личен помощен инструмент, създаден от Здравко от канала <em>Емигрирай в Австралия</em>. Не е професионален съвет — нито правен, нито финансов, нито имиграционен. Всичко в него се основава на личен опит и публично достъпна информация.</p>
+      <p>Условията в Австралия се менят — проверявай официалните източници преди да вземаш решения. Използваш го на своя отговорност.</p>
+      <p>© 2026 Емигрирай в Австралия. Всички права запазени. Не се разпространява без разрешение.</p>
+    </div>
+
+    <label class="pw-checkbox-row">
+      <input type="checkbox" id="pw-agree">
+      <span>Прочетох и приемам условията за ползване.</span>
+    </label>
+
+    <div class="pw-error" id="pw-error">Грешна парола. Провери имейла, с който получи достъп.</div>
+
+    <button class="pw-submit" id="pw-submit" disabled onclick="submitPwGate()">Влез →</button>
+  </div>
+</div>
+
 <div class="wrap">
 
 <!-- =================== MASTHEAD =================== -->
@@ -721,12 +887,12 @@
   <div class="kicker">Емигрирай в Австралия · Стартов пакет</div>
   <h1>Първите 30 дни в Пърт</h1>
   <p class="sub">Контролен списък за това, което те чака — преди, по време и след кацането.</p>
-  <div class="meta">Версия 0.3 · Последно калибрирано: май 2026</div>
+  <div class="meta">Версия 0.4 · Последно калибриране: май 2026</div>
 </header>
 
 <!-- =================== NAME GATE =================== -->
 <section class="name-gate">
-  <label for="buyer-name">Как да ти викам?</label>
+  <label for="buyer-name">Как да ти казвам?</label>
   <input type="text" id="buyer-name" placeholder="Иван, Мария, Здравко..." maxlength="30">
   <div class="hint">Това име ще се появява в списъка, за да ти говоря директно. Само за теб — никой друг няма да го види.</div>
 </section>
@@ -1402,7 +1568,7 @@
 
 <!-- =================== COLOPHON =================== -->
 <div class="colophon">
-  <p><strong>Стартов пакет: Първите 30 дни в Пърт</strong> · Версия 0.3 · май 2026</p>
+  <p><strong>Стартов пакет: Първите 30 дни в Пърт</strong> · Версия 0.4 · май 2026</p>
   <p>Емигрирай в Австралия · emigratetoaustralia.github.io/startov-paket</p>
 </div>
 
@@ -1412,6 +1578,76 @@
 <script>
 (function() {
   const STORAGE_KEY = 'startov_paket_v1';
+  const PW_KEY = 'startov_paket_pw_ok';
+  // ── PASSWORD GATE ───────────────────────────────────────────────────────────
+  const CORRECT_PASSWORD = '30062008';
+
+  function checkPwGate() {
+    const gate = document.getElementById('pw-gate');
+    if (!gate) return;
+    // Already accepted in this browser — skip gate
+    try {
+      if (localStorage.getItem(PW_KEY) === '1') {
+        gate.classList.add('hidden');
+        // Pre-fill name from saved state if available
+        try {
+          const raw = localStorage.getItem(STORAGE_KEY);
+          if (raw) {
+            const saved = JSON.parse(raw);
+            if (saved.name) document.getElementById('buyer-name').value = saved.name;
+          }
+        } catch(e) {}
+        return;
+      }
+    } catch(e) {}
+    // Wire up gate interactivity
+    const nameInput = document.getElementById('pw-name');
+    const pwInput = document.getElementById('pw-input');
+    const agreeBox = document.getElementById('pw-agree');
+    const submitBtn = document.getElementById('pw-submit');
+    const errorEl = document.getElementById('pw-error');
+
+    function checkReady() {
+      const ready = nameInput.value.trim().length > 0
+        && pwInput.value.length > 0
+        && agreeBox.checked;
+      submitBtn.disabled = !ready;
+    }
+    nameInput.addEventListener('input', checkReady);
+    pwInput.addEventListener('input', function() { errorEl.classList.remove('visible'); checkReady(); });
+    agreeBox.addEventListener('change', checkReady);
+    pwInput.addEventListener('keydown', function(e) {
+      if (e.key === 'Enter' && !submitBtn.disabled) submitBtn.click();
+    });
+  }
+
+  window.submitPwGate = function() {
+    const pwInput = document.getElementById('pw-input');
+    const nameInput = document.getElementById('pw-name');
+    const errorEl = document.getElementById('pw-error');
+    if (pwInput.value !== CORRECT_PASSWORD) {
+      errorEl.classList.add('visible');
+      pwInput.value = '';
+      pwInput.focus();
+      return;
+    }
+    // Correct — save flag and name, hide gate
+    try { localStorage.setItem(PW_KEY, '1'); } catch(e) {}
+    const enteredName = nameInput.value.trim();
+    // Pre-fill name into the in-app name field and save to state
+    const inAppName = document.getElementById('buyer-name');
+    if (inAppName) inAppName.value = enteredName;
+    // Update state name immediately before full init runs
+    try {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      const existing = raw ? JSON.parse(raw) : {};
+      existing.name = enteredName;
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(existing));
+    } catch(e) {}
+    document.getElementById('pw-gate').classList.add('hidden');
+  };
+
+  checkPwGate();
 
   // Phase definitions: which item IDs belong to which phase
   const PHASE_ITEMS = {
@@ -1510,10 +1746,9 @@
   };
 
   // ── NAME ───────────────────────────────────────────────────────────────────
-  const nameInput = document.getElementById('buyer-name');
-  nameInput.value = state.name || '';
-  nameInput.addEventListener('input', () => {
-    state.name = nameInput.value.trim();
+  const appNameInput = document.getElementById('buyer-name');
+  appNameInput.addEventListener('input', () => {
+    state.name = appNameInput.value.trim();
     saveState();
     updateNameSlots();
   });
@@ -1756,14 +1991,15 @@
   // ── RESET ──────────────────────────────────────────────────────────────────
   window.resetAll = function() {
     if (!confirm('Сигурен ли си, че искаш да започнеш отначало? Всички твои бележки и отметки ще бъдат изтрити безвъзвратно.')) return;
-    state = { name: '', arrival: '', items: {}, notes: {} };
+    state = { name: state.name, arrival: '', items: {}, notes: {} };
     saveState();
     location.reload();
   };
 
   // ── INIT ───────────────────────────────────────────────────────────────────
   loadState();
-  document.getElementById('buyer-name').value = state.name || '';
+  const inAppNameField = document.getElementById('buyer-name');
+  if (inAppNameField) inAppNameField.value = state.name || '';
   document.getElementById('arrival-date').value = state.arrival || '';
   updateNameSlots();
   updatePhaseDates();
