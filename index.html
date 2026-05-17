@@ -1,0 +1,1800 @@
+<!DOCTYPE html>
+<html lang="bg">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="30 дни в Пърт">
+<meta name="theme-color" content="#ff8000">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icon.png">
+
+<title>Стартов пакет: Първите 30 дни в Пърт</title>
+<style>
+  :root {
+    --orange: #ff8000;
+    --blue: #0252a3;
+    --red: #990300;
+    --green: #01a34f;
+    --ink: #1a1a1a;
+    --ink-soft: #555;
+    --ink-faint: #888;
+    --paper: #fafaf7;
+    --paper-warm: #f3efe6;
+    --line: #e5e0d4;
+    --line-soft: #ece7da;
+    --note-bg: #f5f0ff;
+    --note-bg-tinted: #eef4fb;
+  }
+
+  * { box-sizing: border-box; }
+
+  html, body {
+    margin: 0;
+    padding: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: Georgia, 'Times New Roman', serif;
+    font-size: 17px;
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .wrap {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 32px 22px 80px;
+  }
+
+  /* ============ HEADER ============ */
+  .masthead {
+    border-bottom: 2px solid var(--ink);
+    padding-bottom: 18px;
+    margin-bottom: 22px;
+  }
+  .masthead .kicker {
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--orange);
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+  .masthead h1 {
+    font-size: 32px;
+    line-height: 1.15;
+    margin: 0 0 6px;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+  }
+  .masthead .sub {
+    color: var(--ink-soft);
+    font-style: italic;
+    font-size: 16px;
+    margin: 0;
+  }
+  .masthead .meta {
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    font-size: 11px;
+    color: var(--ink-faint);
+    margin-top: 14px;
+    letter-spacing: 0.04em;
+  }
+
+  /* ============ NAME GATE ============ */
+  .name-gate {
+    background: var(--paper-warm);
+    border-left: 4px solid var(--orange);
+    padding: 18px 20px;
+    margin: 24px 0;
+    border-radius: 0 4px 4px 0;
+  }
+  .name-gate label {
+    display: block;
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    font-size: 12px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    font-weight: 600;
+    color: var(--blue);
+    margin-bottom: 8px;
+  }
+  .name-gate input {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid var(--line);
+    border-radius: 3px;
+    font-family: Georgia, serif;
+    font-size: 17px;
+    background: white;
+    color: var(--ink);
+  }
+  .name-gate input:focus {
+    outline: none;
+    border-color: var(--blue);
+  }
+  .name-gate .hint {
+    font-size: 13px;
+    color: var(--ink-soft);
+    margin-top: 8px;
+    font-style: italic;
+  }
+
+  /* ============ INTRO ============ */
+  .intro {
+    margin: 20px 0 32px;
+  }
+  .intro p {
+    margin: 0 0 14px;
+  }
+  .intro .greeting {
+    font-style: italic;
+    color: var(--blue);
+  }
+
+  /* ============ ARRIVAL DATE ============ */
+  .arrival-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 16px;
+    background: white;
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    margin-bottom: 28px;
+    flex-wrap: wrap;
+  }
+  .arrival-row label {
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    font-size: 12px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    font-weight: 600;
+    color: var(--ink-soft);
+  }
+  .arrival-row input[type="date"] {
+    padding: 6px 10px;
+    border: 1px solid var(--line);
+    border-radius: 3px;
+    font-family: Georgia, serif;
+    font-size: 15px;
+    background: white;
+  }
+  .day-counter {
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    font-size: 13px;
+    color: var(--orange);
+    font-weight: 700;
+    letter-spacing: 0.04em;
+  }
+
+  /* ============ PROGRESS ============ */
+  .progress-summary {
+    background: white;
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    padding: 14px 18px;
+    margin-bottom: 30px;
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    font-size: 13px;
+    color: var(--ink-soft);
+  }
+  .progress-bar {
+    height: 4px;
+    background: var(--line-soft);
+    border-radius: 2px;
+    margin-top: 10px;
+    overflow: hidden;
+  }
+  .progress-fill {
+    height: 100%;
+    background: var(--green);
+    width: 0%;
+    transition: width 0.3s ease;
+  }
+  .progress-stats {
+    display: flex;
+    gap: 18px;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+  .progress-stats strong {
+    color: var(--ink);
+    font-weight: 700;
+  }
+  .progress-stats .done-count { color: var(--green); }
+  .progress-stats .doing-count { color: var(--orange); }
+
+  /* ============ PHASE ============ */
+  .phase {
+    margin-bottom: 44px;
+  }
+  .phase-header {
+    border-top: 1px solid var(--ink);
+    padding-top: 16px;
+    margin-bottom: 18px;
+  }
+  .phase-header .phase-tag {
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--orange);
+    font-weight: 700;
+    margin-bottom: 4px;
+  }
+  .phase-header h2 {
+    font-size: 24px;
+    margin: 0 0 4px;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+  }
+  .phase-header .phase-when {
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    font-size: 12px;
+    color: var(--ink-faint);
+    font-style: italic;
+  }
+  .phase-intro {
+    font-style: italic;
+    color: var(--ink-soft);
+    margin-bottom: 18px;
+    font-size: 15px;
+    line-height: 1.5;
+  }
+
+  /* ============ ITEM ============ */
+  .item {
+    border-bottom: 1px solid var(--line-soft);
+    padding: 16px 0;
+  }
+  .item:last-child {
+    border-bottom: none;
+  }
+  .item-head {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+  }
+  .item-checkbox {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    margin-top: 2px;
+    flex-shrink: 0;
+  }
+  .item-checkbox button {
+    width: 22px;
+    height: 22px;
+    border: 1.5px solid var(--ink-faint);
+    background: white;
+    border-radius: 3px;
+    padding: 0;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.15s ease;
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    font-size: 10px;
+    font-weight: 700;
+    color: transparent;
+  }
+  .item-checkbox button:hover {
+    border-color: var(--ink);
+  }
+  .item-checkbox button.state-doing {
+    border-color: var(--orange);
+    background: var(--orange);
+    color: white;
+  }
+  .item-checkbox button.state-done {
+    border-color: var(--green);
+    background: var(--green);
+    color: white;
+  }
+  .item-checkbox .state-label {
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--ink-faint);
+    text-align: center;
+    width: 22px;
+    line-height: 1.1;
+  }
+  .item-body {
+    flex: 1;
+    min-width: 0;
+  }
+  .item-title {
+    font-weight: 700;
+    font-size: 17px;
+    margin: 0 0 4px;
+    color: var(--ink);
+    line-height: 1.3;
+  }
+  .item.done .item-title {
+    text-decoration: line-through;
+    text-decoration-color: var(--green);
+    color: var(--ink-soft);
+  }
+  .item-why {
+    font-size: 14px;
+    color: var(--ink-soft);
+    font-style: italic;
+    margin: 0 0 8px;
+  }
+  .item-how {
+    font-size: 15px;
+    color: var(--ink);
+    margin: 0;
+    line-height: 1.55;
+  }
+  .item-dep {
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    font-size: 11px;
+    color: var(--red);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-top: 6px;
+    font-style: normal;
+  }
+  .item-note {
+    background: var(--note-bg-tinted);
+    border-left: 3px solid var(--blue);
+    padding: 12px 14px;
+    margin: 10px 0 4px;
+    font-size: 14px;
+    line-height: 1.55;
+    border-radius: 0 3px 3px 0;
+  }
+  .item-note .note-label {
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--blue);
+    font-weight: 700;
+    margin-bottom: 4px;
+    display: block;
+  }
+  .item-note p {
+    margin: 0;
+    color: var(--ink);
+    font-style: italic;
+  }
+
+  /* Personal note textarea */
+  .item-personal-toggle {
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    font-size: 11px;
+    color: var(--ink-faint);
+    background: none;
+    border: none;
+    padding: 4px 0;
+    cursor: pointer;
+    margin-top: 8px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+  .item-personal-toggle:hover { color: var(--blue); }
+  .item-personal {
+    display: none;
+    margin-top: 8px;
+  }
+  .item-personal.open { display: block; }
+  .item-personal textarea {
+    width: 100%;
+    min-height: 60px;
+    padding: 10px;
+    border: 1px solid var(--line);
+    border-radius: 3px;
+    font-family: Georgia, serif;
+    font-size: 14px;
+    background: white;
+    resize: vertical;
+    color: var(--ink);
+  }
+  .item-personal textarea:focus {
+    outline: none;
+    border-color: var(--blue);
+  }
+
+  /* ============ FOOTER + ACTIONS ============ */
+  .actions {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-top: 40px;
+    padding-top: 24px;
+    border-top: 1px solid var(--line);
+  }
+  .actions button {
+    padding: 10px 18px;
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    font-size: 12px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    font-weight: 600;
+    border: 1.5px solid var(--ink);
+    background: white;
+    color: var(--ink);
+    cursor: pointer;
+    border-radius: 3px;
+    transition: all 0.15s;
+  }
+  .actions button:hover {
+    background: var(--ink);
+    color: white;
+  }
+  .actions button.reset {
+    border-color: var(--red);
+    color: var(--red);
+  }
+  .actions button.reset:hover {
+    background: var(--red);
+    color: white;
+  }
+
+  .colophon {
+    margin-top: 40px;
+    padding-top: 20px;
+    border-top: 1px solid var(--line);
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    font-size: 11px;
+    color: var(--ink-faint);
+    line-height: 1.5;
+  }
+  .colophon p { margin: 0 0 6px; }
+
+  .disclaimer {
+    background: var(--paper-warm);
+    padding: 16px 18px;
+    border-radius: 4px;
+    margin-top: 24px;
+    font-size: 13px;
+    color: var(--ink-soft);
+    line-height: 1.55;
+    font-style: italic;
+  }
+  .disclaimer strong {
+    font-style: normal;
+    color: var(--red);
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    display: block;
+    margin-bottom: 6px;
+  }
+
+  /* ============ PRINT ============ */
+
+  /* ============ DATA CONTROLS ============ */
+  .data-controls {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+    padding: 10px 16px;
+    background: white;
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    align-items: center;
+  }
+  .data-controls .dc-label {
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    font-size: 11px;
+    color: var(--ink-faint);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    flex-shrink: 0;
+  }
+  .data-controls button {
+    padding: 5px 12px;
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    font-weight: 600;
+    border: 1.5px solid var(--blue);
+    background: white;
+    color: var(--blue);
+    cursor: pointer;
+    border-radius: 3px;
+    transition: all 0.15s;
+  }
+  .data-controls button:hover { background: var(--blue); color: white; }
+  .autosave-status {
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    font-size: 11px;
+    letter-spacing: 0.04em;
+    margin-left: auto;
+  }
+  .autosave-status.ok { color: var(--green); }
+  .autosave-status.warn { color: var(--red); }
+
+  /* ============ PHASE ACCORDION ============ */
+  .phase {
+    margin-bottom: 6px;
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    overflow: hidden;
+  }
+  .phase-toggle-btn {
+    width: 100%;
+    background: white;
+    border: none;
+    padding: 14px 18px;
+    text-align: left;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    transition: background 0.15s;
+  }
+  .phase-toggle-btn:hover { background: var(--paper-warm); }
+  .phase.is-active .phase-toggle-btn { background: var(--paper-warm); border-left: 3px solid var(--blue); }
+  .phase-chevron {
+    font-size: 10px;
+    color: var(--ink-faint);
+    flex-shrink: 0;
+    transition: transform 0.2s ease;
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+  }
+  .phase.is-open .phase-chevron { transform: rotate(90deg); }
+  .phase-toggle-meta { flex: 1; min-width: 0; }
+  .phase-tag {
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--orange);
+    font-weight: 700;
+    display: block;
+    margin-bottom: 2px;
+  }
+  .phase.is-active .phase-tag { color: var(--blue); }
+  .phase.is-done .phase-tag { color: var(--green); }
+  .phase-title-row {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+  .phase-title-row h2 {
+    font-size: 20px;
+    margin: 0;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    line-height: 1.2;
+  }
+  .phase-when {
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    font-size: 11px;
+    color: var(--ink-faint);
+    font-style: italic;
+  }
+  .phase-count {
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    font-size: 12px;
+    color: var(--ink-faint);
+    flex-shrink: 0;
+    white-space: nowrap;
+  }
+  .phase-count .cnt-done { color: var(--green); font-weight: 700; }
+  .phase-body {
+    display: none;
+    padding: 0 18px 18px;
+    border-top: 1px solid var(--line-soft);
+  }
+  .phase.is-open .phase-body { display: block; }
+  .phase-intro {
+    font-style: italic;
+    color: var(--ink-soft);
+    margin: 14px 0 14px;
+    font-size: 15px;
+    line-height: 1.5;
+  }
+  .phase-congrats {
+    display: none;
+    background: var(--green);
+    color: white;
+    padding: 10px 18px;
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.03em;
+    text-align: center;
+  }
+  .phase.show-congrats .phase-congrats { display: block; }
+
+  /* ============ COMPLETED SECTION ============ */
+  .completed-wrap {
+    margin-top: 36px;
+    display: none;
+  }
+  .completed-wrap.has-items { display: block; }
+  .completed-header {
+    border-top: 1px solid var(--ink);
+    padding-top: 14px;
+    margin-bottom: 10px;
+  }
+  .completed-header h2 {
+    font-size: 18px;
+    margin: 0 0 2px;
+    font-weight: 700;
+    color: var(--green);
+  }
+  .completed-header p {
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    font-size: 11px;
+    color: var(--ink-faint);
+    margin: 0;
+    letter-spacing: 0.03em;
+  }
+  .completed-item {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--line-soft);
+    opacity: 0.65;
+  }
+  .completed-item:last-child { border-bottom: none; }
+  .ci-tick {
+    width: 18px; height: 18px;
+    background: var(--green);
+    border-radius: 2px;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    font-size: 10px; color: white; font-weight: 700;
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+  }
+  .ci-title {
+    flex: 1;
+    font-size: 14px;
+    font-weight: 600;
+    text-decoration: line-through;
+    text-decoration-color: var(--green);
+    color: var(--ink-soft);
+  }
+  .ci-phase {
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    font-size: 10px;
+    color: var(--ink-faint);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    flex-shrink: 0;
+  }
+
+  @media print {
+    body { background: white; font-size: 11pt; }
+    .wrap { max-width: 100%; padding: 0; }
+    .name-gate, .arrival-row, .actions, .item-personal-toggle, .data-controls { display: none !important; }
+    .phase-body { display: block !important; }
+    .phase-toggle-btn { cursor: default; }
+    .item-personal.open { display: block !important; }
+    .item-personal textarea {
+      border: none;
+      padding: 0;
+      font-size: 11pt;
+      background: transparent;
+    }
+    .item { page-break-inside: avoid; }
+    .phase { page-break-inside: auto; }
+    .progress-summary { display: none; }
+    .colophon { font-size: 9pt; }
+    .item-checkbox button {
+      border: 1.5px solid #333 !important;
+      background: white !important;
+    }
+    .item-checkbox button.state-done::after {
+      content: "✓";
+      color: #333 !important;
+    }
+    .item-checkbox button.state-done { color: #333 !important; }
+    .item-checkbox button.state-doing::after {
+      content: "~";
+      color: #333 !important;
+    }
+    .item-checkbox button.state-doing { color: #333 !important; background: white !important; }
+  }
+
+  @media (max-width: 480px) {
+    body { font-size: 16px; }
+    .wrap { padding: 20px 16px 60px; }
+    .masthead h1 { font-size: 26px; }
+    .phase-header h2 { font-size: 21px; }
+    .item-title { font-size: 16px; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<!-- =================== MASTHEAD =================== -->
+<header class="masthead">
+  <div class="kicker">Емигрирай в Австралия · Стартов пакет</div>
+  <h1>Първите 30 дни в Пърт</h1>
+  <p class="sub">Контролен списък за това, което те чака — преди, по време и след кацането.</p>
+  <div class="meta">Версия 0.2 · Последно калибрирано: май 2026</div>
+</header>
+
+<!-- =================== NAME GATE =================== -->
+<section class="name-gate">
+  <label for="buyer-name">Как да ти викам?</label>
+  <input type="text" id="buyer-name" placeholder="Иван, Мария, Здравко..." maxlength="30">
+  <div class="hint">Това име ще се появява в списъка, за да ти говоря директно. Само за теб — никой друг няма да го види.</div>
+</section>
+
+<!-- =================== INTRO =================== -->
+<section class="intro">
+  <p class="greeting">Поздрави от слънчева Австралия, <span class="name-slot">деен мечтателю</span>!</p>
+  <p>Това не е книга. Това е работен документ. Идеята му е проста — да отворя пред теб всичко, което трябва да се случи около пристигането ти в Пърт, в реда, в който има смисъл да се случи.</p>
+  <p>Чекирай задачите докато ги вършиш. Пиши си бележки под всяка — телефонния номер на агента, датата на онлайн заявката, какво си научил. След 30 дни ще имаш не само списък със свършена работа, а и личен дневник от старта си тук.</p>
+  <p>Всичко е разделено на 5 фази. Не са крайни срокове — опорни точки са. Някои хора се справят за 3 седмици, на други им трябват 6. Това е нормално.</p>
+</section>
+
+<!-- =================== ARRIVAL DATE =================== -->
+<div class="arrival-row">
+  <label for="arrival-date">Кога кацаш в Пърт?</label>
+  <input type="date" id="arrival-date">
+  <span class="day-counter" id="day-counter"></span>
+</div>
+
+
+<!-- =================== DATA CONTROLS =================== -->
+<div class="data-controls">
+  <span class="dc-label">Запазване:</span>
+  <button onclick="exportProgress()">⬇ Свали прогреса</button>
+  <button onclick="document.getElementById('import-file').click()">⬆ Зареди прогрес</button>
+  <input type="file" id="import-file" accept=".json" style="display:none" onchange="importProgress(event)">
+  <span class="autosave-status" id="autosave-status"></span>
+</div>
+
+<!-- =================== PROGRESS =================== -->
+<div class="progress-summary">
+  <div class="progress-stats">
+    <span><strong id="total-count">0</strong> задачи общо</span>
+    <span class="done-count"><strong id="done-count">0</strong> готови</span>
+    <span class="doing-count"><strong id="doing-count">0</strong> в процес</span>
+  </div>
+  <div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
+</div>
+
+<!-- ============================================================ -->
+<!-- =================== PHASE 1: BEFORE FLIGHT =================== -->
+<!-- ============================================================ -->
+<div class="phase" id="phase-1" data-phase="1">
+  <button class="phase-toggle-btn" onclick="togglePhase(1)">
+    <span class="phase-chevron">&#9654;</span>
+    <span class="phase-toggle-meta">
+      <span class="phase-tag">Фаза 1 · 4–8 седмици преди полета</span>
+      <span class="phase-title-row"><h2>Преди да тръгнеш</h2><span class="phase-when" id="when-1"></span></span>
+    </span>
+    <span class="phase-count" id="count-1"></span>
+  </button>
+  <div class="phase-congrats">✓ Фаза 1 завършена — браво!</div>
+  <div class="phase-body">
+    <p class="phase-intro">Половината от стреса в първата седмица идва от това, че нещо не е приготвено навреме. Тази фаза е скучна, но решава много.</p>
+
+  <div class="item" data-item="prep-passports">
+    <div class="item-head">
+      <div class="item-checkbox">
+        <button class="cbox" data-id="prep-passports" aria-label="Маркирай"></button>
+        <div class="state-label" id="lbl-prep-passports">—</div>
+      </div>
+      <div class="item-body">
+        <h3 class="item-title">Подновяване на международни паспорти</h3>
+        <p class="item-why">Защото паспортът ще ти трябва за всичко през първия месец — и не искаш да го подновяваш от Пърт.</p>
+        <p class="item-how">Ако паспортът ти изтича в следващите 18 месеца, подмени го преди да тръгнеш. От Австралия процесът минава през българското консулство в Канбера (или мобилните консулски дни в Пърт), отнема месеци и струва повече. По-добре сега, в България, на спокойствие.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="item" data-item="prep-translations">
+    <div class="item-head">
+      <div class="item-checkbox">
+        <button class="cbox" data-id="prep-translations" aria-label="Маркирай"></button>
+        <div class="state-label" id="lbl-prep-translations">—</div>
+      </div>
+      <div class="item-body">
+        <h3 class="item-title">Превод на ключови документи на английски</h3>
+        <p class="item-why">Без официален превод тези документи не ти служат за нищо тук.</p>
+        <p class="item-how">Минималният списък: акт за раждане, акт за граждански брак (ако е приложимо), дипломи, шофьорска книжка, препоръки от работодатели, медицински записи на децата. Преводите трябва да са от заклет преводач — името, адресът, телефонът и квалификацията на преводача трябва да са на всеки документ. NAATI-сертифициран превод е стандартът, който се очаква тук — ако можеш да го осигуриш още от България, дори по-добре.</p>
+        <div class="item-note">
+          <span class="note-label">Бележка от Здравко</span>
+          <p>Аз оставих оригиналите в България и взех само нотариално заверени копия. Подсигурих си и електронни копия на всичко — в облака и на външен диск. За 14 години не съм имал случай, в който са ми поискали оригинал — копие или електронен вариант винаги е било достатъчно.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="item" data-item="prep-references">
+    <div class="item-head">
+      <div class="item-checkbox">
+        <button class="cbox" data-id="prep-references" aria-label="Маркирай"></button>
+        <div class="state-label" id="lbl-prep-references">—</div>
+      </div>
+      <div class="item-body">
+        <h3 class="item-title">Подготвяне на препоръки — работни и за наем</h3>
+        <p class="item-why">Препоръките са валутата на австралийския пазар. Без тях, <span class="name-slot">приятел</span>, шансовете ти за добра работа и за прилична квартира са по-малки.</p>
+        <p class="item-how">Поискай поне 2 препоръки от работодатели на английски, с дата, име, длъжност, телефон и имейл на лицето. И още толкова на хора, които да гарантират за теб като наемател — собственик на жилище, в което си живял, родител на партньора, познат с добро мнение за теб. Препоръчващите трябва да говорят някакъв английски или да могат да отговарят писмено — тук е стандартна практика да им се обаждат за проверка.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="item" data-item="prep-bank-au">
+    <div class="item-head">
+      <div class="item-checkbox">
+        <button class="cbox" data-id="prep-bank-au" aria-label="Маркирай"></button>
+        <div class="state-label" id="lbl-prep-bank-au">—</div>
+      </div>
+      <div class="item-body">
+        <h3 class="item-title">Отвори австралийска банкова сметка от България</h3>
+        <p class="item-why">Това е огромната промяна спрямо преди години. Сега можеш да си спестиш дни обикаляне след кацане.</p>
+        <p class="item-how">CommBank приема онлайн заявка до 14 дни преди пристигането ти и позволява да впишеш чужд адрес. Westpac го прави до 12 месеца предварително. И двете сметки са активни като "deposit only" — можеш да получаваш преводи, но не можеш да теглиш — докато не отидеш лично в клон в Австралия да докажеш самоличност (срок: 20 дни от пристигането при CommBank). Откриването е безплатно. Допълнителна полза: подобно банково извлечение ти дава точки в системата за идентификация при наем по-късно.</p>
+        <div class="item-note">
+          <span class="note-label">Бележка от Здравко</span>
+          <p>Когато аз дойдох през 2012, тази опция не съществуваше. Прехвърлянето на парите от България струваше солени банкови такси. Днес ти препоръчвам два пътя: банкова сметка отворена предварително тук + Wise или Revolut за самия превод. Wise и Revolut са няколко пъти по-евтини от банковите преводи и виждаш всичко в реално време.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="item" data-item="prep-bank-bg">
+    <div class="item-head">
+      <div class="item-checkbox">
+        <button class="cbox" data-id="prep-bank-bg" aria-label="Маркирай"></button>
+        <div class="state-label" id="lbl-prep-bank-bg">—</div>
+      </div>
+      <div class="item-body">
+        <h3 class="item-title">Уреди българската си банкова сметка</h3>
+        <p class="item-why">Ще имаш нужда да достъпваш и управляваш парите си в България години след заминаването.</p>
+        <p class="item-how">Активирай онлайн банкиране, ако още го нямаш. Вземи си токен устройство или друга вторична идентификация — не SMS на български номер, защото най-вероятно ще е спряна след като заминеш. Помисли кой ще те представлява пред банката при нужда — пълномощно прави сега, в България, а не от Австралия (от тук е скъпо и бавно).</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="item" data-item="prep-nap">
+    <div class="item-head">
+      <div class="item-checkbox">
+        <button class="cbox" data-id="prep-nap" aria-label="Маркирай"></button>
+        <div class="state-label" id="lbl-prep-nap">—</div>
+      </div>
+      <div class="item-body">
+        <h3 class="item-title">Освобождаване от здравни осигуровки в България</h3>
+        <p class="item-why">Иначе продължаваш да дължиш месечни вноски на НАП.</p>
+        <p class="item-how">Подава се заявление в НАП по постоянен адрес. Изискването е да си в чужбина поне 183 дни през календарна година. Заявлението може да се подаде лично, чрез упълномощено лице, или по пощата с обратна разписка. Може да се направи и след заминаването, но е по-лесно преди.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="item" data-item="prep-accommodation">
+    <div class="item-head">
+      <div class="item-checkbox">
+        <button class="cbox" data-id="prep-accommodation" aria-label="Маркирай"></button>
+        <div class="state-label" id="lbl-prep-accommodation">—</div>
+      </div>
+      <div class="item-body">
+        <h3 class="item-title">Резервирай временно настаняване в Пърт (поне 2–4 седмици)</h3>
+        <p class="item-why">Пазарът на наеми в Пърт е в криза. Свободни жилища под 1.5%, по 15–40 кандидатури за всяко прилично място. Постоянна квартира за 5 дни не се намира.</p>
+        <p class="item-how">Резервирай Airbnb, serviced apartment, или хотел за първите 2–4 седмици. Реалистично, заради огромното търсене на жилища под наем, може да ти отнеме 6–12 седмици да си намериш постоянен подслон, не дни. Места като Crown Promenade, Quest или Airbnb в Northbridge/Subiaco/Mount Lawley дават гъвкавост и удобна локация. Бюджетирай между $1500–3500 за първия месец временно настаняване в зависимост от размер и качество.</p>
+        <div class="item-note">
+          <span class="note-label">Бележка от Здравко</span>
+          <p><span class="name-slot">Слушай</span>, искам да ти кажа нещо, което не съм видял написано никъде другаде. Имаше една обява за апартамент в Пърт, преди ние да тръгнем — изключително евтин, "наемодател в чужбина", искаше депозит по посредник. Беше класическа измама и аз почти се подлъгах. Ако обявата е твърде хубава, за да е истинска — не е истинска. Никога не плащай за жилище, което не си видял лично или поне чрез видео разходка с агента. Най-добре с агенция или официален сайт.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="item" data-item="prep-sim-research">
+    <div class="item-head">
+      <div class="item-checkbox">
+        <button class="cbox" data-id="prep-sim-research" aria-label="Маркирай"></button>
+        <div class="state-label" id="lbl-prep-sim-research">—</div>
+      </div>
+      <div class="item-body">
+        <h3 class="item-title">Проучи мобилните оператори преди да дойдеш</h3>
+        <p class="item-why">В деня на пристигане не искаш да правиш сравнения. Искаш да влезеш, да платиш и да тръгнеш.</p>
+        <p class="item-how">Трите основни мрежи са Telstra, Optus и Vodafone. По-евтини и солидни prepaid опции: Boost (на Telstra мрежа, най-добро покритие), Aldi Mobile, amaysim, Belong. Преди договор не можеш да сключиш — нямаш доходи от Австралия. Започни с prepaid SIM за първите 1–3 месеца. Купуват се в супермаркети, аптеки, бензиностанции, или директно в магазини на оператора или онлайн.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="item" data-item="prep-money">
+    <div class="item-head">
+      <div class="item-checkbox">
+        <button class="cbox" data-id="prep-money" aria-label="Маркирай"></button>
+        <div class="state-label" id="lbl-prep-money">—</div>
+      </div>
+      <div class="item-body">
+        <h3 class="item-title">Първа седмица в брой (AUD) и резервна карта</h3>
+        <p class="item-why">Дебитната ти българска карта може да не работи навсякъде, а такси от летището приема и брой.</p>
+        <p class="item-how">Носи между $500–1500 в брой за първите няколко дни — храна, транспорт, бърза покупка. Декларирай сумата, ако носиш над $10 000 (или равностойност). Подсигури втора банкова карта от втора банка като резерв — ако едната се блокира при влизане в Австралия (банките понякога блокират карти при чужди транзакции от съображения за сигурност), другата ще работи.</p>
+        <div class="item-note">
+          <span class="note-label">Бележка от Здравко</span>
+          <p>Ако си по-удобен с технологиите — в Австралия без проблем можеш да ползваш Google Wallet или Apple Pay от телефона. Ако имаш закачени карти там, смело ги ползвай на четците за безконтактно плащане, тук им казват EFTPOS терминали. Има ги буквално навсякъде и всички са свикнали с тях.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="item" data-item="prep-packing">
+    <div class="item-head">
+      <div class="item-checkbox">
+        <button class="cbox" data-id="prep-packing" aria-label="Маркирай"></button>
+        <div class="state-label" id="lbl-prep-packing">—</div>
+      </div>
+      <div class="item-body">
+        <h3 class="item-title">Ръчен багаж — резервни дрехи, документи, всички ценности</h3>
+        <p class="item-why">Куфарите се губят. Когато стигнеш до Пърт след 24+ часа път, ще си благодарен че имаш на какво да се преобуеш.</p>
+        <p class="item-how">В ръчния куфар: всички документи в оригинал и копие, паспорти, всички пари в брой, лаптоп, кабели и зарядни, лекарства със собствените им рецепти на английски, поне един комплект бельо и тениска за смяна, делово облекло (риза, обувки) за първото интервю, ключови ценности (бижута, твърд диск, фотоапарат). Литиеви батерии не могат да се чекират — всички батерии задължително в ръчен. В чекирания багаж — всичко друго.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="item" data-item="prep-biosecurity">
+    <div class="item-head">
+      <div class="item-checkbox">
+        <button class="cbox" data-id="prep-biosecurity" aria-label="Маркирай"></button>
+        <div class="state-label" id="lbl-prep-biosecurity">—</div>
+      </div>
+      <div class="item-body">
+        <h3 class="item-title">Запознай се с биозащитните правила на Австралия</h3>
+        <p class="item-why">Австралия има едни от най-строгите митнически правила в света. Глоба за недеклариран сандвич — над $2 600.</p>
+        <p class="item-how">Не носи: пресни плодове, зеленчуци, месо, сирене, яйца, мляко, семена, растения, орехи (сурови), мед, дървени сувенири. Можеш да носиш: фабрично пакетирани и неотворени храни (шоколад, бисквити, пакетирана колбасеничка ВНИМАВАЙ — има специални правила за месо), кафе на зърна или мляно, сухи подправки. Принципът: декларирай при съмнение. Декларирането НЕ води до глоба — недекларирането води. Декларирай лекарствата с рецепта и носи лекарския документ на английски.</p>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ============================================================ -->
+<!-- =================== PHASE 2: FIRST 72 HOURS =================== -->
+<!-- ============================================================ -->
+<div class="phase" id="phase-2" data-phase="2">
+  <button class="phase-toggle-btn" onclick="togglePhase(2)">
+    <span class="phase-chevron">&#9654;</span>
+    <span class="phase-toggle-meta">
+      <span class="phase-tag">Фаза 2 · Дни 1–3</span>
+      <span class="phase-title-row"><h2>Първите 72 часа</h2><span class="phase-when" id="when-2"></span></span>
+    </span>
+    <span class="phase-count" id="count-2"></span>
+  </button>
+  <div class="phase-congrats">✓ Фаза 2 завършена — браво!</div>
+  <div class="phase-body">
+  <p class="phase-intro">Пристигнал си. Ще ти се иска да спиш 14 часа подред. Този ден се отдай на почивка. На следващия започваш с малки крачки — не с всичко наведнъж.</p>
+
+  <div class="item" data-item="arr-rest">
+    <div class="item-head">
+      <div class="item-checkbox">
+        <button class="cbox" data-id="arr-rest" aria-label="Маркирай"></button>
+        <div class="state-label" id="lbl-arr-rest">—</div>
+      </div>
+      <div class="item-body">
+        <h3 class="item-title">Първа нощ — наспи се</h3>
+        <p class="item-why">Защото следващите 10 дни няма да можеш.</p>
+        <p class="item-how">Не започвай с административни задачи в деня на пристигане. Часовата разлика с България е 5–6 часа (Пърт е напред). Тялото ти ще се събужда в 3 сутринта и ще иска да спи в 14:00 в продължение на седмица. Това е нормално.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="item" data-item="arr-sim">
+    <div class="item-head">
+      <div class="item-checkbox">
+        <button class="cbox" data-id="arr-sim" aria-label="Маркирай"></button>
+        <div class="state-label" id="lbl-arr-sim">—</div>
+      </div>
+      <div class="item-body">
+        <h3 class="item-title">Купи австралийска SIM карта (prepaid)</h3>
+        <p class="item-why">Австралийски номер ти трябва за почти всяка задача оттук нататък — TFN, банка, Medicare, наем.</p>
+        <p class="item-how">Купи prepaid пакет, който си проучил още в България. Coles и Woolworths имат стартови комплекти. Активиране отнема 5–30 минути и изисква да докажеш самоличност (паспортът върши работа). Запиши си новия австралийски номер.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="item" data-item="arr-tfn">
+    <div class="item-head">
+      <div class="item-checkbox">
+        <button class="cbox" data-id="arr-tfn" aria-label="Маркирай"></button>
+        <div class="state-label" id="lbl-arr-tfn">—</div>
+      </div>
+      <div class="item-body">
+        <h3 class="item-title">Подай заявление за TFN (Tax File Number)</h3>
+        <p class="item-why">Без TFN, работодателите удържат максимална данъчна ставка от заплатата. С TFN — нормалните данъци.</p>
+        <p class="item-how">Подава се онлайн чрез системата IAR (Individual Auto Registration) на ATO. Безплатно е, отнема около 20 минути. Изискване: трябва да си вече в Австралия и да имаш виза с право на работа. Системата изисква австралийски часови пояс — ако ползваш VPN от чужд сървър, прекъсни го преди да започнеш. ATO ще ти изпрати TFN писмо на австралийския ти адрес за до 28 дни. Запиши си референтния номер (receipt ID).</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="item" data-item="arr-bank-verify">
+    <div class="item-head">
+      <div class="item-checkbox">
+        <button class="cbox" data-id="arr-bank-verify" aria-label="Маркирай"></button>
+        <div class="state-label" id="lbl-arr-bank-verify">—</div>
+      </div>
+      <div class="item-body">
+        <h3 class="item-title">Активирай банковата си сметка в клон</h3>
+        <p class="item-why">Сметката, която отвори от България, е активна само като "deposit only" — нужна е лична верификация.</p>
+        <p class="item-how">Отиди до най-близкия клон с паспорт. CommBank изисква да го направиш в рамките на 20 дни от откриване на сметката, иначе тя автоматично се затваря. Носи и TFN-а си (ако вече си получил референтен номер), или поне receipt ID от заявката, или казват на банковия служител да го запише след това. Без TFN банката удържа данъци от лихвите ти.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="item" data-item="arr-smartrider">
+    <div class="item-head">
+      <div class="item-checkbox">
+        <button class="cbox" data-id="arr-smartrider" aria-label="Маркирай"></button>
+        <div class="state-label" id="lbl-arr-smartrider">—</div>
+      </div>
+      <div class="item-body">
+        <h3 class="item-title">Купи SmartRider карта</h3>
+        <p class="item-why">Градският транспорт в Пърт е удобен и евтин — но само със SmartRider.</p>
+        <p class="item-how">SmartRider е презареждаемата транспортна карта на Transperth. Купува се от Transperth InfoCentres (на гарите Perth, Wellington Street, Esplanade Busport), от някои аптеки CommNews/newsagents с табела "SmartRider". Цена на самата карта ~$10, заредиш я с пари, тарифираш при влизане и излизане (Tag on, Tag off). Без нея плащаш единични билети, които са значително по-скъпи. От 2026 можеш да използваш банкова карта директно, но струва по-скъпо.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="item" data-item="arr-pharmacy">
+    <div class="item-head">
+      <div class="item-checkbox">
+        <button class="cbox" data-id="arr-pharmacy" aria-label="Маркирай"></button>
+        <div class="state-label" id="lbl-arr-pharmacy">—</div>
+      </div>
+      <div class="item-body">
+        <h3 class="item-title">Намери близка аптека и магазин</h3>
+        <p class="item-why">Първите дни ще ти трябва нещо просто — паста за зъби, шампоан, лекарство против болка, може би нещо за стомах след дългия полет.</p>
+        <p class="item-how">Аптеките тук са Chemist Warehouse (най-евтиното), Priceline, Terry White. Супермаркетите Coles и Woolworths са навсякъде, имат и стандартна аптечна стока. Aldi е значително по-евтин супермаркет, ако имаш такъв близо.</p>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ============================================================ -->
+<!-- =================== PHASE 3: WEEK 1 =================== -->
+<!-- ============================================================ -->
+<div class="phase" id="phase-3" data-phase="3">
+  <button class="phase-toggle-btn" onclick="togglePhase(3)">
+    <span class="phase-chevron">&#9654;</span>
+    <span class="phase-toggle-meta">
+      <span class="phase-tag">Фаза 3 · Дни 4–7</span>
+      <span class="phase-title-row"><h2>Седмица 1 — фундамент</h2><span class="phase-when" id="when-3"></span></span>
+    </span>
+    <span class="phase-count" id="count-3"></span>
+  </button>
+  <div class="phase-congrats">✓ Фаза 3 завършена — браво!</div>
+  <div class="phase-body">
+  <p class="phase-intro">Сега започваш да изграждаш профила си в системата. Тези стъпки отварят вратите към всичко останало.</p>
+
+  <div class="item" data-item="w1-medicare">
+    <div class="item-head">
+      <div class="item-checkbox">
+        <button class="cbox" data-id="w1-medicare" aria-label="Маркирай"></button>
+        <div class="state-label" id="lbl-w1-medicare">—</div>
+      </div>
+      <div class="item-body">
+        <h3 class="item-title">Регистрирай се в Medicare</h3>
+        <p class="item-why">Medicare покрива голяма част от лекарските прегледи. Без него — плащаш всичко от джоба си.</p>
+        <p class="item-how">От 2025 година процесът е онлайн чрез myGov — не трябва да ходиш до Service Centre. Стъпки: създай myGov акаунт, свържи Medicare като услуга, натисни "Enrol in Medicare", качи паспорт + виза + потвърдителен документ за визата (visa grant notice). Документите НЕ трябва да са заверени. След одобрение, физическа Medicare карта ти идва по пощата за 1–3 седмици. Дигиталната карта е достъпна веднага в myGov приложението. Семейството регистрираш заедно — за деца под 15 ти даваш техните данни директно; за партньор или дете над 15 има стъпка с application number.</p>
+        <div class="item-note">
+          <span class="note-label">Бележка от Здравко</span>
+          <p>Това е огромно подобрение от времето, когато аз пристигнах. Преди трябваше да обиколиш офис, да чакаш, да представиш всичко на хартия. Днес — 20 минути на телефона. Използвай това време, спестено в опашка, за да отидеш да изпиеш едно кафе край океана. Заслужил си го.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="item" data-item="w1-mygov">
+    <div class="item-head">
+      <div class="item-checkbox">
+        <button class="cbox" data-id="w1-mygov" aria-label="Маркирай"></button>
+        <div class="state-label" id="lbl-w1-mygov">—</div>
+      </div>
+      <div class="item-body">
+        <h3 class="item-title">Създай myGov акаунт</h3>
+        <p class="item-why">myGov е централната врата към всички правителствени услуги — данъци, Medicare, Centrelink, здравно досие.</p>
+        <p class="item-how">Регистрираш се на my.gov.au с имейл и австралийски телефонен номер. Свързваш ATO (за данъци), Medicare (за здравеопазване), Centrelink (за социални плащания, ако ти трябват). Активирай двуфакторна автентикация — това ще ти спести главоболия при кражба на акаунта. Препоръчвам да си свалиш и myGov мобилното приложение — много по-удобно от уеб версията.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="item" data-item="w1-gp">
+    <div class="item-head">
+      <div class="item-checkbox">
+        <button class="cbox" data-id="w1-gp" aria-label="Маркирай"></button>
+        <div class="state-label" id="lbl-w1-gp">—</div>
+      </div>
+      <div class="item-body">
+        <h3 class="item-title">Намери общопрактикуващ лекар (GP) в района</h3>
+        <p class="item-why">Дори здрав, ще ти трябва GP за рецепти, направления, ваксини на децата.</p>
+        <p class="item-how">Търси клиника с "bulk billing" — това означава, че Medicare плаща всичко директно и ти не плащаш нищо за прегледа. Не всички клиники работят на този принцип. Hotdoc.com.au и healthengine.com.au са най-използваните за намиране и резервиране на час. Резервирай първи стандартен преглед (general health check) — лекарят ще ти отвори досие в системата и след това ще можеш да си записваш часове по-бързо.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="item" data-item="w1-area-walk">
+    <div class="item-head">
+      <div class="item-checkbox">
+        <button class="cbox" data-id="w1-area-walk" aria-label="Маркирай"></button>
+        <div class="state-label" id="lbl-w1-area-walk">—</div>
+      </div>
+      <div class="item-body">
+        <h3 class="item-title">Опознай района — пеша, не с Google Maps</h3>
+        <p class="item-why">Карта на телефона ти показва къде е магазинът. Не ти показва, че между теб и него има 6-лентова артерия без светофар.</p>
+        <p class="item-how">Обиколи в радиус 1 км от временното си жилище. Открий: най-близък супермаркет (Coles, Woolworths, Aldi), аптека, спирка на автобус/влак, парк, кафе, място за тиха работа. Това ще ти помогне да усетиш дали районът ти харесва — преди да си обвързан с дългосрочен наем някъде.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="item" data-item="w1-rental-research">
+    <div class="item-head">
+      <div class="item-checkbox">
+        <button class="cbox" data-id="w1-rental-research" aria-label="Маркирай"></button>
+        <div class="state-label" id="lbl-w1-rental-research">—</div>
+      </div>
+      <div class="item-body">
+        <h3 class="item-title">Започни проучване на пазара за наеми</h3>
+        <p class="item-why">Не за да наемеш сега — а за да разбереш цените, кварталите и какво искат агенциите.</p>
+        <p class="item-how">Регистрирай се в realestate.com.au и domain.com.au, активирай alerts за критерии, които те интересуват (бюджет, район, брой спални). Гледай 30–40 обяви — ще усетиш реалните цени бързо. В Пърт текущата ситуация е тежка — свободни жилища под 1.5% от пазара, по 15–40 кандидатури за всеки прилично подреден имот. Не се отчайвай предварително — просто планирай реалистично, не очаквай постоянна квартира на седмия ден.</p>
+        <div class="item-note">
+          <span class="note-label">Бележка от Здравко</span>
+          <p>Това е най-голямата промяна спрямо 2012. Тогава имаше избор. Днес — пазарът е страховит. Първият път, в който се преместих в Пърт, попаднах при ужасен наемодател в къща, която споделяхме с други наематели. Това беше един от най-стресовите ми месеци тук. Ако имаш партньор и възможност, започнете и двамата паралелно да гледате, да ходите на огледи, да изграждате връзка с агенции — увеличава шансовете значително.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="item" data-item="w1-cv">
+    <div class="item-head">
+      <div class="item-checkbox">
+        <button class="cbox" data-id="w1-cv" aria-label="Маркирай"></button>
+        <div class="state-label" id="lbl-w1-cv">—</div>
+      </div>
+      <div class="item-body">
+        <h3 class="item-title">Адаптирай професионалното си CV в австралийски формат</h3>
+        <p class="item-why">Българското CV не работи тук. Структурата, езикът и форматът са други.</p>
+        <p class="item-how">Австралийско CV: 2–3 страници, без снимка, без дата на раждане, без семейно положение. Структура — кратко резюме (3–4 реда какво правиш и какъв стаж имаш), Key Skills (булет лист), Work Experience (с конкретни постижения, не описания), Education, References (или "Available on request"). Използвай австралийско правописване (не американско): "organisation", "specialised", "centre". Адаптирай за всяка позиция, на която кандидатстваш.</p>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ============================================================ -->
+<!-- =================== PHASE 4: WEEKS 2-3 =================== -->
+<!-- ============================================================ -->
+<div class="phase" id="phase-4" data-phase="4">
+  <button class="phase-toggle-btn" onclick="togglePhase(4)">
+    <span class="phase-chevron">&#9654;</span>
+    <span class="phase-toggle-meta">
+      <span class="phase-tag">Фаза 4 · Дни 8–21</span>
+      <span class="phase-title-row"><h2>Седмици 2–3 — вглъбяване</h2><span class="phase-when" id="when-4"></span></span>
+    </span>
+    <span class="phase-count" id="count-4"></span>
+  </button>
+  <div class="phase-congrats">✓ Фаза 4 завършена — браво!</div>
+  <div class="phase-body">
+  <p class="phase-intro">Сега се движиш едновременно по три фронта: работа, наем, и да оцелееш в новата ежедневна реалност. Това е изтощителната част. Темпото пада, но фокусът трябва да остане.</p>
+
+  <div class="item" data-item="w23-job-search">
+    <div class="item-head">
+      <div class="item-checkbox">
+        <button class="cbox" data-id="w23-job-search" aria-label="Маркирай"></button>
+        <div class="state-label" id="lbl-w23-job-search">—</div>
+      </div>
+      <div class="item-body">
+        <h3 class="item-title">Започни активно търсене на работа</h3>
+        <p class="item-why">Колкото по-бързо имаш австралийски доход и работни фишове за заплата, толкова по-бързо ти се отваря пазарът за наеми.</p>
+        <p class="item-how">Основни сайтове: seek.com.au (най-голям), indeed.com.au, jobsearch.gov.au. Регистрирай се и в няколко recruitment агенции — те са безплатни за кандидати и често имат позиции, които не са обявени публично. Hays, Robert Half, Chandler Macleod, Michael Page, Hudson са по-големите. LinkedIn профилът ти трябва да е оптимизиран — много recruiters работят оттам.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="item" data-item="w23-linkedin">
+    <div class="item-head">
+      <div class="item-checkbox">
+        <button class="cbox" data-id="w23-linkedin" aria-label="Маркирай"></button>
+        <div class="state-label" id="lbl-w23-linkedin">—</div>
+      </div>
+      <div class="item-body">
+        <h3 class="item-title">Обнови LinkedIn профила си — Australia first</h3>
+        <p class="item-why">Recruiters в Австралия започват търсенето от LinkedIn преди seek.</p>
+        <p class="item-how">Сложи "Perth, Western Australia" като локация. Профилната снимка трябва да изглежда професионално (не селфи на плажа от ваканцията). Постави "Open to Work" статус за recruiters. Опиши позициите си с австралийско правописване. Свържи се с recruiters от агенциите в твоята област — повечето приемат connection requests от профили в тяхната ниша. Обади им се по телефона, осъществи човешка връзка с тях.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="item" data-item="w23-rental-apps">
+    <div class="item-head">
+      <div class="item-checkbox">
+        <button class="cbox" data-id="w23-rental-apps" aria-label="Маркирай"></button>
+        <div class="state-label" id="lbl-w23-rental-apps">—</div>
+      </div>
+      <div class="item-body">
+        <h3 class="item-title">Подавай заявки за наем (мисли в 10–20, не в 1–2)</h3>
+        <p class="item-why">При 15–40 кандидатури за всеки имот, шансът ти от единична заявка е малък. Масовият подход върши работа.</p>
+        <p class="item-how">Тръгвай на огледи лично — снимките лъжат, а собствениците избират хора, които са видели мястото. Носи си: банкови извлечения (за първите 1–3 месеца платежоспособност), писмо от работодателя (ако вече имаш такъв), писмо за наем от България, препоръки, паспорт + виза. Cover letter — кратко, лично, защо точно ти за това място. 100-точкова идентификация — паспорт (70 точки) + банкова карта или Medicare карта (25 точки) + банково извлечение или сметка на твое име (25 точки) = 120 точки.</p>
+        <p class="item-dep">⚠ Зависи от: банковата сметка да е активна и да имаш банково извлечение</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="item" data-item="w23-license">
+    <div class="item-head">
+      <div class="item-checkbox">
+        <button class="cbox" data-id="w23-license" aria-label="Маркирай"></button>
+        <div class="state-label" id="lbl-w23-license">—</div>
+      </div>
+      <div class="item-body">
+        <h3 class="item-title">Започни процеса за австралийска шофьорска книжка</h3>
+        <p class="item-why">Имаш 3 месеца от пристигането, в които можеш да караш с българската си книжка. След това — само австралийска.</p>
+        <p class="item-how">ВАЖНА ПРОМЯНА: от 1 ноември 2025, България вече НЕ е в списъка с "Recognised Countries" за WA. Това означава, че НЕ можеш просто да обмениш българската шофьорска книжка с австралийска. Трябва да: (1) минеш теоретичен тест по правилата за движение, (2) минеш практически шофьорски изпит. WA има най-нисък процент на успеваемост в Австралия — около 35%. Започни подготовка веднага. Купи си "WA Drivers Manual" (безплатна онлайн версия), вземи 3–5 платени уроци с инструктор — той знае какво очаква изпитващият. Шофьорската книжка ще ти трябва за идентификация и почти всичко тук.</p>
+        <div class="item-note">
+          <span class="note-label">Бележка от Здравко</span>
+          <p>Това е промяна, която удари мнозина наскоро. До октомври 2025 българската книжка се обменяше директно за около час в Department of Transport. От 1 ноември — повече не. Сега цялата процедура може да отнеме 2–6 месеца. Не отлагай! Започни уроците в първата си седмица тук. И не подценявай теста — австралийските правила за предимство на кръстовища, скоростни ограничения и алкохолни лимити са по-стриктни от българските.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="item" data-item="w23-community">
+    <div class="item-head">
+      <div class="item-checkbox">
+        <button class="cbox" data-id="w23-community" aria-label="Маркирай"></button>
+        <div class="state-label" id="lbl-w23-community">—</div>
+      </div>
+      <div class="item-body">
+        <h3 class="item-title">Свържи се с българската общност в Пърт</h3>
+        <p class="item-why">Първият месец на края на света без хора около теб е психологически тежък. Българската общност тук помага.</p>
+        <p class="item-how">"Българско дружество Родина" в Пърт има активна Facebook група и редовни срещи. Българската православна църква в Пърт има събития през уикенди. Не за да станеш изолиран в българската среда — а за да имаш първи кръг от хора, които разбират какво преживяваш. От опит, един телефонен номер на българин в града в първите седмици струва повече от безкрайно скролване в имигрантски форуми.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="item" data-item="w23-english-prep">
+    <div class="item-head">
+      <div class="item-checkbox">
+        <button class="cbox" data-id="w23-english-prep" aria-label="Маркирай"></button>
+        <div class="state-label" id="lbl-w23-english-prep">—</div>
+      </div>
+      <div class="item-body">
+        <h3 class="item-title">Английски — ако имаш AMEP покритие, активирай го</h3>
+        <p class="item-why">Adult Migrant English Program е безплатна за постоянни мигранти с ниво под "vocational English". Платил си косвено за тази услуга чрез визата си.</p>
+        <p class="item-how">Ако в семейството ти има някой с по-слаб английски (типично партньор, който не е бил основен кандидат), AMEP може да предложи до 510 часа безплатно обучение. Регистрираш се чрез immi.homeaffairs.gov.au или директно с TAFE Western Australia. Срокът за регистрация е важен — провери актуалните условия в момента на пристигане.</p>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ============================================================ -->
+<!-- =================== PHASE 5: WEEK 4 =================== -->
+<!-- ============================================================ -->
+<div class="phase" id="phase-5" data-phase="5">
+  <button class="phase-toggle-btn" onclick="togglePhase(5)">
+    <span class="phase-chevron">&#9654;</span>
+    <span class="phase-toggle-meta">
+      <span class="phase-tag">Фаза 5 · Дни 22–30</span>
+      <span class="phase-title-row"><h2>Седмица 4 — закотвяне</h2><span class="phase-when" id="when-5"></span></span>
+    </span>
+    <span class="phase-count" id="count-5"></span>
+  </button>
+  <div class="phase-congrats">✓ Фаза 5 завършена — браво!</div>
+  <div class="phase-body">
+  <p class="phase-intro">Първият месец завършва. Ако имаш яснота по тези въпроси, значи си добре подреден. Ако не — не се паникьосвай. Реалистично, голяма част от мигрантите подреждат тези неща за 2–4 месеца, не за 30 дни.</p>
+
+  <div class="item" data-item="w4-tfn-received">
+    <div class="item-head">
+      <div class="item-checkbox">
+        <button class="cbox" data-id="w4-tfn-received" aria-label="Маркирай"></button>
+        <div class="state-label" id="lbl-w4-tfn-received">—</div>
+      </div>
+      <div class="item-body">
+        <h3 class="item-title">Получено TFN писмо и записан номер</h3>
+        <p class="item-why">Без писменото потвърждение, твоят TFN не е "завършен" в собствените ти записи.</p>
+        <p class="item-how">Писмото пристига до 28 дни след онлайн заявката. Когато дойде, дай номера на банката си (ако още не си го дал) и на всеки бъдещ работодател. Не носи писмото в портфейла си — съхрани го на сигурно място (аз го пазя защитено в облака при останалите си ценни данни и имам достъп чрез телефона си по всяко време). Номерът е важна лична информация — не го споделяй публично.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="item" data-item="w4-medicare-card">
+    <div class="item-head">
+      <div class="item-checkbox">
+        <button class="cbox" data-id="w4-medicare-card" aria-label="Маркирай"></button>
+        <div class="state-label" id="lbl-w4-medicare-card">—</div>
+      </div>
+      <div class="item-body">
+        <h3 class="item-title">Получена физическа Medicare карта</h3>
+        <p class="item-why">Дигиталната карта работи, но физическата ти трябва за някои сценарии (спешни случаи при паднал телефон например).</p>
+        <p class="item-how">Картата пристига за 1–3 седмици след одобрение. Носи я в портфейла. Запиши номера и в Apple Wallet / Google Wallet (дигиталната версия е достъпна през myGov приложението).</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="item" data-item="w4-private-health">
+    <div class="item-head">
+      <div class="item-checkbox">
+        <button class="cbox" data-id="w4-private-health" aria-label="Маркирай"></button>
+        <div class="state-label" id="lbl-w4-private-health">—</div>
+      </div>
+      <div class="item-body">
+        <h3 class="item-title">Реши за частна здравна застраховка</h3>
+        <p class="item-why">Lifetime Health Cover loading — ако нямаш частна здравна застраховка преди определена възраст, плащаш повече цял живот.</p>
+        <p class="item-how">За нови мигранти, базовата дата е 1 юли след първата годишнина от пълната регистрация в Medicare — имаш време. Но докато ти решиш, проучи. Двата основни вида покритие: hospital (стационарно) и extras (за зъболекар, очила и т.н.). Сравни оферти на privatehealth.gov.au. Австралийското правителство дава отстъпка (rebate) на повечето домакинства — стойността зависи от доходите ти.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="item" data-item="w4-rental-decision">
+    <div class="item-head">
+      <div class="item-checkbox">
+        <button class="cbox" data-id="w4-rental-decision" aria-label="Маркирай"></button>
+        <div class="state-label" id="lbl-w4-rental-decision">—</div>
+      </div>
+      <div class="item-body">
+        <h3 class="item-title">Реши за следващото настаняване (наем подписан ИЛИ удължено временно)</h3>
+        <p class="item-why">Или си намерил постоянно място, или удължаваш временното. И двете опции са нормални за края на първия месец.</p>
+        <p class="item-how">Ако имаш одобрение за наем — поздравления, прочети договора внимателно ПРЕДИ да подпишеш. Депозит (bond) е стандартно 4 седмици наем, плюс 2–4 седмици наем предварително — общо $3500–5000 за повечето места. В WA, bond се внася в Bond Administrator (държавен орган), не директно в собственика. Ако още няма одобрение — удължи Airbnb-то или хотела за още месец. Не приемай първото лошо място само защото си изморен. По-добре месец повече временно.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="item" data-item="w4-emergency-plan">
+    <div class="item-head">
+      <div class="item-checkbox">
+        <button class="cbox" data-id="w4-emergency-plan" aria-label="Маркирай"></button>
+        <div class="state-label" id="lbl-w4-emergency-plan">—</div>
+      </div>
+      <div class="item-body">
+        <h3 class="item-title">Финансов план "Б" — за следващите 3 месеца</h3>
+        <p class="item-why">Ако работата не дойде в първите 8 седмици, не искаш да започнеш да паникьосваш на 9-та.</p>
+        <p class="item-how">Седни и пресметни: колко са оставащите ти пари, какъв е месечният burn rate (наем + храна + транспорт + сметки + лични разходи), колко месеца имаш още. Ако имаш по-малко от 3 месеца — мисли за временна работа (Coles, Woolworths, доставки, рецепционист) докато търсиш работа в твоята област. Не е поражение — стратегия е.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="item" data-item="w4-kings-park">
+    <div class="item-head">
+      <div class="item-checkbox">
+        <button class="cbox" data-id="w4-kings-park" aria-label="Маркирай"></button>
+        <div class="state-label" id="lbl-w4-kings-park">—</div>
+      </div>
+      <div class="item-body">
+        <h3 class="item-title">Изгледай Пърт от Kings Park</h3>
+        <p class="item-why">Не е административна задача. Това е ритуал.</p>
+        <p class="item-how">Качи се до Kings Park, седни на пейка с изглед към града и Swan River. Помисли за изминалия месец. Какво направи. Колко далеч стигна. Колко неща научи. Поглеждайки оттам, Пърт изглежда малък. Но ти вече знаеш, че не е.</p>
+        <div class="item-note">
+          <span class="note-label">Бележка от Здравко</span>
+          <p><span class="name-slot">Деен мечтателю</span>, направих си този ритуал след първия си месец в Пърт през 2012. Връщам се там и до днес, когато ми трябва перспектива. Първият месец е най-тежкият период от целия процес — и в края му не получаваш медал. Но си заслужи този момент. Изпий едно кафе и се загледай в океана. Дотук добре.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- =================== COMPLETED SECTION =================== -->
+<div class="completed-wrap" id="completed-wrap">
+  <div class="completed-header">
+    <h2>✓ Завършени задачи</h2>
+    <p>Задачите, отметнати като готово</p>
+  </div>
+  <div id="completed-list"></div>
+</div>
+
+<!-- =================== DISCLAIMER =================== -->
+<div class="disclaimer">
+  <strong>Важно — този инструмент не е имиграционен или правен съвет</strong>
+  Този контролен списък е базиран на личния опит на Здравко (Зак) от живота в Пърт от 2012 г. насам и на публично достъпна информация към май 2026 г. Това не е имиграционен съвет — за въпроси относно виза се консултирай с регистриран миграционен агент (MARA). Това не е правен, данъчен, финансов или медицински съвет. Правителствените процеси, такси и изисквания се променят често — винаги проверявай актуалната информация на официалните сайтове (ATO, Services Australia, Department of Transport WA, Department of Home Affairs) преди да предприемеш действие. Този инструмент е помощно средство за планиране, не заместител на професионален съвет.
+</div>
+
+<!-- =================== ACTIONS =================== -->
+<div class="actions">
+  <button onclick="window.print()">Принтирай / Експортирай PDF</button>
+  <button class="reset" onclick="resetAll()">Започни отначало</button>
+</div>
+
+<!-- =================== COLOPHON =================== -->
+<div class="colophon">
+  <p><strong>Стартов пакет: Първите 30 дни в Пърт</strong> · Версия 0.2</p>
+  <p>Последно калибрирано: май 2026</p>
+  <p>Емигрирай в Австралия · YouTube канал и Patreon на Здравко — българин в Пърт от 2012 г.</p>
+  <p>Данните се пазят локално · Използвай „Свали прогреса" за резервно копие · Никой не вижда твоите бележки освен теб</p>
+  <p>emigratetoaustralia.github.io/startov-paket</p>
+  <p style="margin-top:14px; font-style:italic;">Ще се видим в следващото видео.</p>
+</div>
+
+</div>
+
+<!-- =================== JAVASCRIPT =================== -->
+<script>
+(function() {
+  const STORAGE_KEY = 'startov_paket_v1';
+
+  // Phase definitions: which item IDs belong to which phase
+  const PHASE_ITEMS = {
+    1: ['prep-passports','prep-translations','prep-references','prep-bank-au','prep-bank-bg','prep-nap','prep-accommodation','prep-sim-research','prep-money','prep-packing','prep-biosecurity'],
+    2: ['arr-rest','arr-sim','arr-tfn','arr-bank-verify','arr-smartrider','arr-pharmacy'],
+    3: ['w1-medicare','w1-mygov','w1-gp','w1-area-walk','w1-rental-research','w1-cv'],
+    4: ['w23-job-search','w23-linkedin','w23-rental-apps','w23-license','w23-community','w23-english-prep'],
+    5: ['w4-tfn-received','w4-medicare-card','w4-private-health','w4-rental-decision','w4-emergency-plan','w4-kings-park']
+  };
+
+  const PHASE_LABELS = {
+    1: 'Фаза 1', 2: 'Фаза 2', 3: 'Фаза 3', 4: 'Фаза 4', 5: 'Фаза 5'
+  };
+
+  // Day offsets for each phase relative to arrival
+  const PHASE_OFFSETS = {
+    1: { start: -56, end: -1, label: 'Около ' },
+    2: { start: 0,   end: 2,  label: '' },
+    3: { start: 3,   end: 6,  label: '' },
+    4: { start: 7,   end: 20, label: '' },
+    5: { start: 21,  end: 29, label: '' }
+  };
+
+  const MONTHS = ['януари','февруари','март','април','май','юни','юли','август','септември','октомври','ноември','декември'];
+
+  // ── STATE ──────────────────────────────────────────────────────────────────
+  let state = { name: '', arrival: '', items: {}, notes: {} };
+
+  // ── STORAGE ────────────────────────────────────────────────────────────────
+  let storageWorks = false;
+  try {
+    localStorage.setItem('__test__', '1');
+    localStorage.removeItem('__test__');
+    storageWorks = true;
+  } catch(e) {}
+
+  function loadState() {
+    if (!storageWorks) return;
+    try {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if (raw) state = Object.assign(state, JSON.parse(raw));
+    } catch(e) {}
+  }
+
+  function saveState() {
+    if (storageWorks) {
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+      } catch(e) {}
+    }
+    showSaveStatus();
+  }
+
+  function showSaveStatus() {
+    const el = document.getElementById('autosave-status');
+    if (!el) return;
+    if (storageWorks) {
+      el.className = 'autosave-status ok';
+      el.textContent = '✓ Записано';
+      clearTimeout(el._t);
+      el._t = setTimeout(() => { el.textContent = ''; }, 2500);
+    } else {
+      el.className = 'autosave-status warn';
+      el.textContent = '⚠ Запази ръчно с бутона';
+    }
+  }
+
+  // Export progress as JSON file
+  window.exportProgress = function() {
+    const blob = new Blob([JSON.stringify(state, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'startov_paket_progress.json';
+    a.click();
+    URL.revokeObjectURL(url);
+  };
+
+  // Import progress from JSON file
+  window.importProgress = function(event) {
+    const file = event.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      try {
+        const imported = JSON.parse(e.target.result);
+        state = Object.assign({ name: '', arrival: '', items: {}, notes: {} }, imported);
+        saveState();
+        location.reload();
+      } catch(err) {
+        alert('Файлът не може да се прочете. Провери дали е правилният .json файл.');
+      }
+    };
+    reader.readAsText(file);
+    event.target.value = '';
+  };
+
+  // ── NAME ───────────────────────────────────────────────────────────────────
+  const nameInput = document.getElementById('buyer-name');
+  nameInput.value = state.name || '';
+  nameInput.addEventListener('input', () => {
+    state.name = nameInput.value.trim();
+    saveState();
+    updateNameSlots();
+  });
+
+  function updateNameSlots() {
+    document.querySelectorAll('.name-slot').forEach(el => {
+      if (!el.dataset.original) el.dataset.original = el.textContent;
+      el.textContent = state.name || el.dataset.original;
+    });
+  }
+
+  // ── ARRIVAL DATE ───────────────────────────────────────────────────────────
+  const arrivalInput = document.getElementById('arrival-date');
+  arrivalInput.value = state.arrival || '';
+  arrivalInput.addEventListener('change', () => {
+    state.arrival = arrivalInput.value;
+    saveState();
+    updatePhaseDates();
+    updateDayCounter();
+    updateActivePhase();
+  });
+
+  function updatePhaseDates() {
+    if (!state.arrival) {
+      for (let p = 1; p <= 5; p++) {
+        const el = document.getElementById('when-' + p);
+        if (el) el.textContent = '';
+      }
+      return;
+    }
+    const arrival = new Date(state.arrival + 'T12:00:00');
+    for (let p = 1; p <= 5; p++) {
+      const el = document.getElementById('when-' + p);
+      if (!el) continue;
+      const cfg = PHASE_OFFSETS[p];
+      const s = new Date(arrival); s.setDate(s.getDate() + cfg.start);
+      const e = new Date(arrival); e.setDate(e.getDate() + cfg.end);
+      el.textContent = cfg.label + s.getDate() + ' ' + MONTHS[s.getMonth()] + ' – ' + e.getDate() + ' ' + MONTHS[e.getMonth()] + ' ' + e.getFullYear();
+    }
+  }
+
+  function updateDayCounter() {
+    const el = document.getElementById('day-counter');
+    if (!state.arrival) { el.textContent = ''; return; }
+    const arrival = new Date(state.arrival + 'T12:00:00');
+    const today = new Date(); today.setHours(12,0,0,0);
+    const diff = Math.round((today - arrival) / 86400000);
+    if (diff < 0) el.textContent = 'остават ' + Math.abs(diff) + ' дни до полета';
+    else if (diff === 0) el.textContent = 'днес е денят на пристигане';
+    else if (diff <= 30) el.textContent = 'ден ' + (diff + 1) + ' от 30';
+    else el.textContent = 'над 30 дни от пристигането';
+  }
+
+  // ── PHASE ACCORDION ────────────────────────────────────────────────────────
+  let userOpenedPhase = null; // track manual overrides
+
+  window.togglePhase = function(num) {
+    const el = document.getElementById('phase-' + num);
+    if (!el) return;
+    const opening = !el.classList.contains('is-open');
+    if (opening) {
+      userOpenedPhase = num;
+    } else {
+      userOpenedPhase = null;
+    }
+    el.classList.toggle('is-open');
+  };
+
+  function getActivePhaseByDate() {
+    if (!state.arrival) return 1;
+    const arrival = new Date(state.arrival + 'T12:00:00');
+    const today = new Date(); today.setHours(12,0,0,0);
+    const diff = Math.round((today - arrival) / 86400000);
+    if (diff < 0) return 1;
+    if (diff <= 2) return 2;
+    if (diff <= 6) return 3;
+    if (diff <= 20) return 4;
+    return 5;
+  }
+
+  function isPhaseComplete(num) {
+    return PHASE_ITEMS[num].every(id => state.items[id] === 'done');
+  }
+
+  function updateActivePhase() {
+    const byDate = getActivePhaseByDate();
+    // Find first incomplete phase at or after date-suggested phase
+    let active = byDate;
+    for (let p = byDate; p <= 5; p++) {
+      if (!isPhaseComplete(p)) { active = p; break; }
+    }
+
+    for (let p = 1; p <= 5; p++) {
+      const el = document.getElementById('phase-' + p);
+      if (!el) continue;
+      el.classList.remove('is-active', 'is-done');
+      if (p < active && isPhaseComplete(p)) el.classList.add('is-done');
+      if (p === active) el.classList.add('is-active');
+    }
+
+    // Open active phase if user hasn't manually controlled it
+    if (userOpenedPhase === null) {
+      for (let p = 1; p <= 5; p++) {
+        const el = document.getElementById('phase-' + p);
+        if (!el) continue;
+        if (p === active) el.classList.add('is-open');
+        else el.classList.remove('is-open');
+      }
+    }
+  }
+
+  // ── CHECKBOXES ─────────────────────────────────────────────────────────────
+  document.querySelectorAll('.cbox').forEach(btn => {
+    const id = btn.getAttribute('data-id');
+    applyCheckboxState(btn, id);
+    btn.addEventListener('click', () => {
+      const cur = state.items[id];
+      if (!cur) state.items[id] = 'doing';
+      else if (cur === 'doing') state.items[id] = 'done';
+      else delete state.items[id];
+      saveState();
+      applyCheckboxState(btn, id);
+      updateProgress();
+      updatePhaseCounts();
+      updateCompletedSection();
+      checkPhaseComplete(btn);
+      updateActivePhase();
+    });
+  });
+
+  function applyCheckboxState(btn, id) {
+    const cur = state.items[id];
+    btn.classList.remove('state-doing', 'state-done');
+    const itemEl = document.querySelector('[data-item="' + id + '"]');
+    if (itemEl) itemEl.classList.remove('done');
+    const lbl = document.getElementById('lbl-' + id);
+    if (cur === 'doing') {
+      btn.classList.add('state-doing'); btn.textContent = '~';
+      if (lbl) lbl.textContent = 'в процес';
+    } else if (cur === 'done') {
+      btn.classList.add('state-done'); btn.textContent = '✓';
+      if (lbl) lbl.textContent = 'готово';
+      if (itemEl) itemEl.classList.add('done');
+    } else {
+      btn.textContent = '';
+      if (lbl) lbl.textContent = '—';
+    }
+  }
+
+  function checkPhaseComplete(btn) {
+    const phaseEl = btn.closest('.phase');
+    if (!phaseEl) return;
+    const num = parseInt(phaseEl.dataset.phase);
+    if (isPhaseComplete(num)) {
+      phaseEl.classList.add('show-congrats', 'is-done');
+      setTimeout(() => {
+        phaseEl.classList.remove('show-congrats');
+      }, 3500);
+    } else {
+      phaseEl.classList.remove('show-congrats', 'is-done');
+    }
+  }
+
+  // ── PERSONAL NOTES ─────────────────────────────────────────────────────────
+  document.querySelectorAll('.item').forEach(itemEl => {
+    const id = itemEl.getAttribute('data-item');
+    const body = itemEl.querySelector('.item-body');
+    if (!body) return;
+    const toggle = document.createElement('button');
+    toggle.className = 'item-personal-toggle';
+    toggle.textContent = '+ Бележка';
+    const wrap = document.createElement('div');
+    wrap.className = 'item-personal';
+    const ta = document.createElement('textarea');
+    ta.placeholder = 'Твоите бележки за тази стъпка — телефони, дати, наблюдения...';
+    ta.value = state.notes[id] || '';
+    if (state.notes[id]) { wrap.classList.add('open'); toggle.textContent = '− Бележка'; }
+    ta.addEventListener('input', () => { state.notes[id] = ta.value; saveState(); });
+    toggle.addEventListener('click', () => {
+      wrap.classList.toggle('open');
+      toggle.textContent = wrap.classList.contains('open') ? '− Бележка' : '+ Бележка';
+    });
+    wrap.appendChild(ta);
+    body.appendChild(toggle);
+    body.appendChild(wrap);
+  });
+
+  // ── PROGRESS ───────────────────────────────────────────────────────────────
+  function updateProgress() {
+    const total = document.querySelectorAll('.cbox').length;
+    let done = 0, doing = 0;
+    Object.values(state.items).forEach(v => {
+      if (v === 'done') done++;
+      else if (v === 'doing') doing++;
+    });
+    document.getElementById('total-count').textContent = total;
+    document.getElementById('done-count').textContent = done;
+    document.getElementById('doing-count').textContent = doing;
+    const pct = total ? (done / total) * 100 : 0;
+    document.getElementById('progress-fill').style.width = pct + '%';
+  }
+
+  function updatePhaseCounts() {
+    for (let p = 1; p <= 5; p++) {
+      const el = document.getElementById('count-' + p);
+      if (!el) continue;
+      const ids = PHASE_ITEMS[p];
+      const done = ids.filter(id => state.items[id] === 'done').length;
+      el.innerHTML = '<span class="cnt-done">' + done + '</span>/' + ids.length;
+    }
+  }
+
+  // ── COMPLETED SECTION ──────────────────────────────────────────────────────
+  function updateCompletedSection() {
+    const wrap = document.getElementById('completed-wrap');
+    const list = document.getElementById('completed-list');
+    if (!wrap || !list) return;
+    list.innerHTML = '';
+    let count = 0;
+    for (let p = 1; p <= 5; p++) {
+      PHASE_ITEMS[p].forEach(id => {
+        if (state.items[id] !== 'done') return;
+        const itemEl = document.querySelector('[data-item="' + id + '"]');
+        if (!itemEl) return;
+        const title = itemEl.querySelector('.item-title');
+        if (!title) return;
+        const div = document.createElement('div');
+        div.className = 'completed-item';
+        div.innerHTML =
+          '<div class="ci-tick">✓</div>' +
+          '<div class="ci-title">' + title.textContent + '</div>' +
+          '<div class="ci-phase">' + PHASE_LABELS[p] + '</div>';
+        list.appendChild(div);
+        count++;
+      });
+    }
+    wrap.classList.toggle('has-items', count > 0);
+  }
+
+  // ── RESET ──────────────────────────────────────────────────────────────────
+  window.resetAll = function() {
+    if (!confirm('Сигурен ли си, че искаш да започнеш отначало? Всички твои бележки и отметки ще бъдат изтрити безвъзвратно.')) return;
+    state = { name: '', arrival: '', items: {}, notes: {} };
+    saveState();
+    location.reload();
+  };
+
+  // ── INIT ───────────────────────────────────────────────────────────────────
+  loadState();
+  document.getElementById('buyer-name').value = state.name || '';
+  document.getElementById('arrival-date').value = state.arrival || '';
+  updateNameSlots();
+  updatePhaseDates();
+  updateDayCounter();
+  document.querySelectorAll('.cbox').forEach(btn => applyCheckboxState(btn, btn.getAttribute('data-id')));
+  updateProgress();
+  updatePhaseCounts();
+  updateCompletedSection();
+  updateActivePhase();
+
+  if (!storageWorks) {
+    const el = document.getElementById('autosave-status');
+    if (el) { el.className = 'autosave-status warn'; el.textContent = '⚠ Запази ръчно с бутона'; }
+  }
+
+  setInterval(updateDayCounter, 3600000);
+})();
+</script>
+
+<script>
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', function() {
+    navigator.serviceWorker.register('sw.js').catch(function(err) {
+      console.log('SW registration failed:', err);
+    });
+  });
+}
+</script>
+</body>
+</html>
