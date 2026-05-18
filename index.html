@@ -214,44 +214,6 @@
   .pw-submit:hover:not(:disabled) { background: #013d7a; }
   .pw-submit:disabled { opacity: 0.4; cursor: default; }
 
-  /* ============ NAME GATE (inline, shown after pw gate) ============ */
-  .name-gate {
-    background: var(--paper-warm);
-    border-left: 4px solid var(--orange);
-    padding: 18px 20px;
-    margin: 24px 0;
-    border-radius: 0 4px 4px 0;
-  }
-  .name-gate label {
-    display: block;
-    font-family: 'Helvetica Neue', Arial, sans-serif;
-    font-size: 12px;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    font-weight: 600;
-    color: var(--blue);
-    margin-bottom: 8px;
-  }
-  .name-gate input {
-    width: 100%;
-    padding: 10px 12px;
-    border: 1px solid var(--line);
-    border-radius: 3px;
-    font-family: Georgia, serif;
-    font-size: 17px;
-    background: white;
-    color: var(--ink);
-  }
-  .name-gate input:focus {
-    outline: none;
-    border-color: var(--blue);
-  }
-  .name-gate .hint {
-    font-size: 13px;
-    color: var(--ink-soft);
-    margin-top: 8px;
-    font-style: italic;
-  }
 
   /* ============ INTRO ============ */
   .intro {
@@ -435,6 +397,8 @@
     text-align: center;
     width: 22px;
     line-height: 1.1;
+    word-break: break-all;
+    overflow: hidden;
   }
   .item-body {
     flex: 1;
@@ -805,7 +769,7 @@
   @media print {
     body { background: white; font-size: 11pt; }
     .wrap { max-width: 100%; padding: 0; }
-    #pw-gate, .name-gate, .arrival-row, .actions, .item-personal-toggle, .data-controls { display: none !important; }
+    #pw-gate, .arrival-row, .actions, .item-personal-toggle, .data-controls { display: none !important; }
     .phase-body { display: block !important; }
     .phase-toggle-btn { cursor: default; }
     .item-personal.open { display: block !important; }
@@ -848,6 +812,21 @@
     }
     .pw-card {
       padding: 24px 20px;
+    }
+    .data-controls {
+      flex-direction: column;
+      align-items: stretch;
+    }
+    .data-controls .dc-label {
+      margin-bottom: 2px;
+    }
+    .data-controls button {
+      width: 100%;
+      text-align: center;
+    }
+    .autosave-status {
+      margin-left: 0;
+      text-align: center;
     }
   }
 </style>
@@ -898,12 +877,7 @@
   <div class="meta">Версия 0.4 · Последно калибриране: май 2026</div>
 </header>
 
-<!-- =================== NAME GATE =================== -->
-<section class="name-gate">
-  <label for="buyer-name">Как да ти казвам?</label>
-  <input type="text" id="buyer-name" placeholder="Иван, Мария, Здравко..." maxlength="30">
-  <div class="hint">Това име ще се появява в списъка, за да ти говоря директно. Само за теб — никой друг няма да го види.</div>
-</section>
+<input type="hidden" id="buyer-name">
 
 <!-- =================== INTRO =================== -->
 <section class="intro">
@@ -1652,6 +1626,9 @@
       existing.name = enteredName;
       localStorage.setItem(STORAGE_KEY, JSON.stringify(existing));
     } catch(e) {}
+    // Update in-memory state and refresh name slots
+    state.name = enteredName;
+    if (typeof updateNameSlots === 'function') updateNameSlots();
     document.getElementById('pw-gate').classList.add('hidden');
   };
 
