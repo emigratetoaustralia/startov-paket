@@ -1562,7 +1562,14 @@
   const STORAGE_KEY = 'startov_paket_v1';
   const PW_KEY = 'startov_paket_pw_ok';
   // ── PASSWORD GATE ───────────────────────────────────────────────────────────
-  const CORRECT_PASSWORD = '30062008';
+  // SHA-256 hash of the access password. Plaintext never stored here.
+  // To rotate: echo -n 'newpassword' | sha256sum  →  update hash below + PW_KEY version
+  const CORRECT_PASSWORD_HASH = 'b1d6afb2819cf21ded030e4377624b63ce62dd5b8bf19cc1542fef02dd6be615';
+
+  async function sha256(str) {
+    const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(str));
+    return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, '0')).join('');
+  }
 
   function checkPwGate() {
     const gate = document.getElementById('pw-gate');
@@ -1603,14 +1610,21 @@
     });
   }
 
-  window.submitPwGate = function() {
+  window.submitPwGate = async function() {
     const pwInput = document.getElementById('pw-input');
     const nameInput = document.getElementById('pw-name');
     const errorEl = document.getElementById('pw-error');
-    if (pwInput.value !== CORRECT_PASSWORD) {
+    const submitBtn = document.getElementById('pw-submit');
+
+    submitBtn.disabled = true; // prevent double-click during async hash check
+
+    const enteredHash = await sha256(pwInput.value);
+
+    if (enteredHash !== CORRECT_PASSWORD_HASH) {
       errorEl.classList.add('visible');
       pwInput.value = '';
       pwInput.focus();
+      submitBtn.disabled = false;
       return;
     }
     // Correct — save flag and name, hide gate
