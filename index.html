@@ -137,6 +137,15 @@
     color: var(--fg-primary);
   }
 
+  @media (prefers-color-scheme: dark) {
+    .item-note { border-left-color: var(--brand-orange); }
+    .item-note .note-label { color: var(--brand-orange); }
+  }
+  :root[data-theme="dark"] .item-note { border-left-color: var(--brand-orange); }
+  :root[data-theme="dark"] .item-note .note-label { color: var(--brand-orange); }
+  :root[data-theme="light"] .item-note { border-left-color: var(--brand-blue, #0252A3); }
+  :root[data-theme="light"] .item-note .note-label { color: var(--brand-blue, #0252A3); }
+
   /* ── Personal note toggle / area (JS-created) ── */
   .item-personal-toggle {
     font-family: var(--font-body);
