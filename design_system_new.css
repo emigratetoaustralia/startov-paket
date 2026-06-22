@@ -4,6 +4,8 @@
    one file needs to be linked.
    ============================================================ */
 
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800&family=Open+Sans:wght@400;600&display=swap');
+
 /* ----------------------------------------------------------
    BASE TOKENS (colors, type, spacing, motion, radius)
    ---------------------------------------------------------- */
@@ -61,8 +63,8 @@
   --shadow-focus: 0 0 0 4px rgba(255, 128, 0, 0.28);
 
   /* Typography */
-  --font-display: Georgia, 'Times New Roman', serif;
-  --font-body:    'Helvetica Neue', Arial, sans-serif;
+  --font-display: 'Montserrat', 'Helvetica Neue', Arial, sans-serif;
+  --font-body:    'Open Sans', 'Helvetica Neue', Arial, sans-serif;
 
   --fs-micro:    11px;
   --fs-caption:  13px;

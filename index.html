@@ -17,6 +17,9 @@
   (function(){ var t = localStorage.getItem('ea-theme'); if(t) document.documentElement.setAttribute('data-theme', t); })();
 </script>
 <style>
+  /* Brand rule: no italics, ever */
+  em, i, cite, address { font-style: normal; }
+
   /* ── Password gate overlay ── */
   #pw-gate {
     position: fixed;
@@ -117,7 +120,6 @@
   .item-note p {
     margin: 0;
     color: var(--fg-primary);
-    font-style: italic;
   }
 
   /* ── Personal note toggle / area (JS-created) ── */
@@ -363,8 +365,7 @@
   .phase.is-open .phase-body { display: block; }
 
   .phase-intro {
-    font-family: var(--font-display);
-    font-style: italic;
+    font-family: var(--font-body);
     color: var(--fg-secondary);
     margin: var(--space-4) 0;
     font-size: var(--fs-body-sm);
@@ -421,7 +422,7 @@
     color: var(--fg-primary);
   }
   .intro p { margin: 0 0 var(--space-3); }
-  .intro .greeting { font-style: italic; color: var(--brand-blue, #0252A3); }
+  .intro .greeting { color: var(--fg-primary); }
 
   /* ── Actions ── */
   .actions {
@@ -451,10 +452,8 @@
     font-size: var(--fs-caption);
     color: var(--fg-secondary);
     line-height: var(--lh-relaxed);
-    font-style: italic;
   }
   .disclaimer-strip strong {
-    font-style: normal;
     color: var(--danger);
     font-family: var(--font-body);
     font-size: var(--fs-micro);
