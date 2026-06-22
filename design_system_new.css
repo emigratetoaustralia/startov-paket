@@ -265,11 +265,12 @@ body {
 }
 
 .pwa-header__logo {
-  width: 32px;
-  height: 32px;
-  border-radius: var(--radius-pill);
+  height: 36px;
+  width: auto;
+  max-width: 120px;
   flex-shrink: 0;
-  object-fit: cover;
+  object-fit: contain;
+}
 }
 
 .pwa-header__title {
@@ -388,10 +389,10 @@ body {
 }
 
 .pwa-gate__logo {
-  width: 72px;
-  height: 72px;
-  border-radius: var(--radius-pill);
-  object-fit: cover;
+  height: 80px;
+  width: auto;
+  max-width: 240px;
+  object-fit: contain;
 }
 
 .pwa-gate__brand {
