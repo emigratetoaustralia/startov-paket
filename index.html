@@ -526,6 +526,14 @@
     .task-item__check.state-doing::after { content: "~"; color: #333; font-size: 12px; font-weight: bold; }
   }
 
+  /* ── Desktop responsive ── */
+  @media (min-width: 768px) {
+    .intro { font-size: var(--fs-body); }
+    .item-how { font-size: var(--fs-body); }
+    .item-note { padding: var(--space-4) var(--space-5); font-size: var(--fs-body-sm); }
+    .phase-intro { font-size: var(--fs-body); }
+  }
+
   /* ── Mobile responsive ── */
   @media (max-width: 480px) {
     #pw-gate { align-items: flex-start; padding: var(--space-5) var(--space-4); }

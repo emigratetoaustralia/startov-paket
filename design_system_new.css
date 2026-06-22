@@ -195,8 +195,8 @@
   --pwa-safe-bottom:     env(safe-area-inset-bottom, 0px);
   --pwa-safe-left:       env(safe-area-inset-left, 0px);
   --pwa-safe-right:      env(safe-area-inset-right, 0px);
-  --pwa-max-width:       640px;
-  --pwa-content-px:      var(--space-5); /* 24px */
+  --pwa-max-width:       860px;
+  --pwa-content-px:      var(--space-5); /* 24px mobile, overridden at 768px */
 }
 
 /* ----------------------------------------------------------
@@ -1624,6 +1624,37 @@ select.input {
   color: var(--fg-secondary);
   max-width: 280px;
   line-height: var(--lh-relaxed);
+}
+
+/* ----------------------------------------------------------
+   RESPONSIVE — DESKTOP
+   ---------------------------------------------------------- */
+
+@media (min-width: 768px) {
+  :root {
+    --pwa-content-px: var(--space-7); /* 40px on desktop */
+  }
+
+  /* Larger heading sizes */
+  .phase-header__title { font-size: var(--fs-h2); }
+  .phase-header__eyebrow { font-size: var(--fs-caption); }
+
+  /* Task items: more breathing room, larger type */
+  .task-item { padding: var(--space-5); }
+  .task-item__title { font-size: var(--fs-h4); }
+  .task-item__desc { font-size: var(--fs-body-sm); }
+
+  /* Phase body stack */
+  .phase-body .stack { gap: var(--space-4); }
+
+  /* Progress summary */
+  .progress-summary { padding: var(--space-5) var(--space-6); }
+}
+
+@media (min-width: 1024px) {
+  :root {
+    --pwa-content-px: var(--space-8); /* 48px on wide desktop */
+  }
 }
 
 
