@@ -1825,6 +1825,14 @@ if ('serviceWorker' in navigator) {
 </script>
 
 <script>
+function applyThemeIcon(isDark) {
+  var sun  = document.querySelector('.theme-icon--sun');
+  var moon = document.querySelector('.theme-icon--moon');
+  if (!sun || !moon) return;
+  sun.style.display  = isDark ? '' : 'none';
+  moon.style.display = isDark ? 'none' : '';
+}
+
 window.toggleTheme = function() {
   var html = document.documentElement;
   var current = html.getAttribute('data-theme');
@@ -1832,7 +1840,15 @@ window.toggleTheme = function() {
   var next = isDark ? 'light' : 'dark';
   html.setAttribute('data-theme', next);
   localStorage.setItem('ea-theme', next);
+  applyThemeIcon(next === 'dark');
 };
+
+// Set correct icon on first paint
+(function() {
+  var t = document.documentElement.getAttribute('data-theme');
+  var isDark = t === 'dark' || (!t && window.matchMedia('(prefers-color-scheme: dark)').matches);
+  applyThemeIcon(isDark);
+})();
 </script>
 </body>
 </html>
