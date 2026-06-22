@@ -849,9 +849,9 @@ body {
   min-width: 0;
   border: none;
   background: transparent;
-  font-family: var(--font-display);
+  font-family: var(--font-body);
   font-size: var(--fs-body-sm);
-  font-weight: 700;
+  font-weight: 600;
   color: var(--fg-primary);
   text-align: right;
   padding: 0;
