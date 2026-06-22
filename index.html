@@ -9,8 +9,13 @@
 <meta name="theme-color" content="#ff8000">
 <link rel="manifest" href="manifest.json">
 <link rel="apple-touch-icon" href="icon.png">
+<link rel="stylesheet" href="design_system_new.css">
 
 <title>Стартов пакет: Първите 30 дни в Пърт</title>
+<script>
+  /* Restore saved theme before first paint to prevent FOUC */
+  (function(){ var t = localStorage.getItem('ea-theme'); if(t) document.documentElement.setAttribute('data-theme', t); })();
+</script>
 <style>
   :root {
     --orange: #ff8000;
