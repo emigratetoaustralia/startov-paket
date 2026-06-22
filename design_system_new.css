@@ -271,7 +271,6 @@ body {
   flex-shrink: 0;
   object-fit: contain;
 }
-}
 
 .pwa-header__title {
   flex: 1;
