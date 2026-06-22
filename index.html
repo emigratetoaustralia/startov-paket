@@ -88,7 +88,7 @@
     color: var(--fg-primary);
     margin: var(--space-2) 0 0;
     line-height: var(--lh-relaxed);
-    font-family: var(--font-display);
+    font-family: var(--font-body);
   }
   .item-dep {
     font-family: var(--font-body);
@@ -144,7 +144,7 @@
     padding: var(--space-3);
     border: 1.5px solid var(--border-default);
     border-radius: var(--radius-sm);
-    font-family: var(--font-display);
+    font-family: var(--font-body);
     font-size: var(--fs-caption);
     background: var(--bg-surface);
     color: var(--fg-primary);
@@ -416,13 +416,21 @@
   /* ── Intro section ── */
   .intro {
     margin: var(--space-4) 0 var(--space-6);
-    font-family: var(--font-display);
+    font-family: var(--font-body);
     font-size: var(--fs-body);
     line-height: var(--lh-relaxed);
-    color: var(--fg-primary);
+    color: var(--fg-secondary);
   }
   .intro p { margin: 0 0 var(--space-3); }
-  .intro .greeting { color: var(--fg-primary); }
+  .intro .greeting {
+    display: block;
+    font-family: var(--font-display);
+    font-size: 22px;
+    font-weight: 800;
+    color: var(--brand-orange);
+    line-height: var(--lh-snug);
+    margin-bottom: var(--space-4);
+  }
 
   /* ── Actions ── */
   .actions {

@@ -402,7 +402,7 @@ body {
 .pwa-gate__title {
   font-family: var(--font-display);
   font-size: var(--fs-h2);
-  font-weight: 700;
+  font-weight: 800;
   color: var(--fg-primary);
   line-height: var(--lh-snug);
   letter-spacing: var(--tracking-tight);
@@ -540,7 +540,7 @@ body {
 .phase-header__title {
   font-family: var(--font-display);
   font-size: var(--fs-h4);
-  font-weight: 700;
+  font-weight: 800;
   color: var(--fg-primary);
   margin: 2px 0 0;
   line-height: var(--lh-snug);
@@ -650,9 +650,9 @@ body {
 }
 
 .task-item__title {
-  font-family: var(--font-body);
-  font-size: var(--fs-body-sm);
-  font-weight: 600;
+  font-family: var(--font-display);
+  font-size: var(--fs-body);
+  font-weight: 700;
   color: var(--fg-primary);
   line-height: var(--lh-normal);
   transition: opacity var(--dur-fast);
@@ -665,7 +665,7 @@ body {
 }
 
 .task-item__desc {
-  font-size: var(--fs-caption);
+  font-size: 14px;
   color: var(--fg-secondary);
   margin-top: var(--space-1);
   line-height: var(--lh-relaxed);
