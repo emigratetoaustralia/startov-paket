@@ -750,7 +750,7 @@ body {
   padding: 0 var(--space-2);
   border-radius: var(--radius-pill);
   font-size: 10px;
-  font-weight: 700;
+  font-weight: 600;
   letter-spacing: 0.06em;
   text-transform: uppercase;
   flex-shrink: 0;
@@ -841,7 +841,7 @@ body {
 .budget-row__currency {
   font-family: var(--font-body);
   font-size: var(--fs-caption);
-  font-weight: 700;
+  font-weight: 600;
   color: var(--fg-tertiary);
   flex-shrink: 0;
   letter-spacing: 0.02em;
@@ -877,7 +877,7 @@ body {
 
 .budget-summary__eyebrow {
   font-size: var(--fs-micro);
-  font-weight: 700;
+  font-weight: 600;
   letter-spacing: var(--tracking-caps);
   text-transform: uppercase;
   color: rgba(255, 255, 255, 0.68);
@@ -916,7 +916,7 @@ body {
 
 .budget-summary__row strong {
   color: #FFFFFF;
-  font-weight: 700;
+  font-weight: 600;
 }
 
 
@@ -1094,7 +1094,7 @@ body {
 
 .result-card__eyebrow {
   font-size: var(--fs-micro);
-  font-weight: 700;
+  font-weight: 600;
   letter-spacing: var(--tracking-caps);
   text-transform: uppercase;
   color: var(--brand-orange);
@@ -1487,7 +1487,7 @@ select.input {
 }
 
 .alert__title {
-  font-weight: 700;
+  font-weight: 600;
   margin-bottom: 2px;
 }
 
@@ -1722,7 +1722,7 @@ select.input {
 
 .section-label {
   font-size: var(--fs-micro);
-  font-weight: 700;
+  font-weight: 600;
   letter-spacing: var(--tracking-caps);
   text-transform: uppercase;
   color: var(--fg-tertiary);
