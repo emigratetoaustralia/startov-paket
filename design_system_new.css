@@ -669,7 +669,9 @@ body {
 }
 
 .task-item__desc {
+  font-family: var(--font-body);
   font-size: 14px;
+  font-weight: 400;
   color: var(--fg-secondary);
   margin-top: var(--space-1);
   line-height: var(--lh-relaxed);
@@ -1645,7 +1647,6 @@ select.input {
   /* Task items: more breathing room, larger type */
   .task-item { padding: var(--space-5); }
   .task-item__title { font-size: var(--fs-h4); }
-  .task-item__desc { font-size: var(--fs-body-sm); }
 
   /* Phase body stack */
   .phase-body .stack { gap: var(--space-4); }
