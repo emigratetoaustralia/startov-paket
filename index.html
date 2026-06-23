@@ -526,19 +526,105 @@
     .task-item__check.state-doing::after { content: "~"; color: #333; font-size: 12px; font-weight: bold; }
   }
 
-  /* ── Theme toggle icons ── */
-  /* Default (light): show moon, hide sun */
-  .theme-icon--sun  { display: none; }
-  .theme-icon--moon { display: block; }
-  /* Dark mode: show sun, hide moon */
-  @media (prefers-color-scheme: dark) {
-    .theme-icon--sun  { display: block; }
-    .theme-icon--moon { display: none; }
+  /* ── Top bar ── */
+  #wizard-top {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    width: 100%;
+    background: #FF8000;
+    padding: 12px 24px;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    box-shadow: 0 3px 0 0 rgba(0,0,0,0.25);
   }
-  :root[data-theme="dark"]  .theme-icon--sun  { display: block; }
-  :root[data-theme="dark"]  .theme-icon--moon { display: none; }
-  :root[data-theme="light"] .theme-icon--sun  { display: none; }
-  :root[data-theme="light"] .theme-icon--moon { display: block; }
+  .top-bar-logo {
+    width: 36px;
+    height: 36px;
+    border-radius: 4px;
+    object-fit: cover;
+    flex-shrink: 0;
+  }
+  #top-bar-text {
+    flex: 1 1 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+    min-width: 0;
+  }
+  #app-title {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 17px;
+    font-weight: 700;
+    color: #FFFFFF;
+    letter-spacing: -0.01em;
+    line-height: 1.2;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  #app-subtitle {
+    font-family: 'Open Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 400;
+    color: rgba(255,255,255,0.75);
+    line-height: 1.2;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .back-btn {
+    flex-shrink: 0;
+    background: none;
+    border: none;
+    font-size: 17px;
+    color: #FFFFFF;
+    padding: 8px 12px;
+    border-radius: 999px;
+    cursor: pointer;
+    transition: background 120ms ease-out;
+  }
+  .back-btn:hover { background: rgba(255,255,255,0.18); }
+  .theme-toggle {
+    flex-shrink: 0;
+    width: 36px;
+    height: 36px;
+    border-radius: 999px;
+    border: none;
+    background: transparent;
+    color: #FFFFFF;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background 120ms ease-out;
+  }
+  .theme-toggle:hover { background: rgba(255,255,255,0.18); }
+
+  /* ── Top progress bar ── */
+  #progress-bar {
+    width: 100%;
+    height: 6px;
+    background: var(--border-subtle);
+    box-sizing: border-box;
+  }
+  @media (prefers-color-scheme: dark) {
+    #progress-bar { background: #3A3531; }
+  }
+  :root[data-theme="dark"]  #progress-bar { background: #3A3531; }
+  :root[data-theme="light"] #progress-bar { background: var(--border-subtle); }
+  #progress-fill {
+    height: 100%;
+    background: #FF8000;
+    width: 0%;
+    transition: width 0.45s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  @media (min-width: 900px) {
+    #wizard-top { padding: 12px 48px; }
+  }
 
   /* ── Desktop responsive ── */
   @media (min-width: 768px) {
@@ -592,33 +678,20 @@
 
 <!-- =================== APP SHELL =================== -->
 <div class="pwa-shell">
-  <header class="pwa-header">
-    <div class="pwa-header__inner">
-      <img src="EA.png" class="pwa-header__logo" alt="">
-      <div class="pwa-header__title">
-        <span class="pwa-header__app-name">30 дни в Пърт</span>
-        <span class="pwa-header__sub">Емигрирай в Австралия · Стартов пакет</span>
-      </div>
-      <button class="pwa-header__icon-btn" id="theme-toggle" onclick="toggleTheme()" aria-label="Смени тема">
-        <!-- Sun: visible in dark mode (click to go light) -->
-        <svg class="theme-icon theme-icon--sun" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <circle cx="12" cy="12" r="5"></circle>
-          <line x1="12" y1="1" x2="12" y2="3"></line>
-          <line x1="12" y1="21" x2="12" y2="23"></line>
-          <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
-          <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
-          <line x1="1" y1="12" x2="3" y2="12"></line>
-          <line x1="21" y1="12" x2="23" y2="12"></line>
-          <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
-          <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
-        </svg>
-        <!-- Moon: visible in light mode (click to go dark) -->
-        <svg class="theme-icon theme-icon--moon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
-        </svg>
-      </button>
+  <!-- Top bar — spans 100% viewport width -->
+  <div id="wizard-top">
+    <button id="back-btn" class="back-btn" aria-label="Назад" style="visibility:hidden">←</button>
+    <img src="EA.png" alt="EA" class="top-bar-logo">
+    <div id="top-bar-text">
+      <span id="app-title">30 дни в Пърт</span>
+      <span id="app-subtitle">Емигрирай в Австралия</span>
     </div>
-  </header>
+    <button id="theme-toggle" class="theme-toggle" aria-label="Превключи тема"></button>
+  </div>
+  <!-- Progress bar sits below the orange bar, on the page background -->
+  <div id="progress-bar" role="progressbar" aria-label="Напредък">
+    <div id="progress-fill"></div>
+  </div>
 
   <main class="pwa-body">
 
@@ -655,7 +728,7 @@
         <span class="done-count"><strong id="done-count">0</strong> готови</span>
         <span class="doing-count"><strong id="doing-count">0</strong> в процес</span>
       </div>
-      <div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
+      <div class="progress-bar"><div class="progress-fill" id="summary-fill"></div></div>
     </div>
 
     <!-- ============================================================ -->
@@ -1739,6 +1812,8 @@
     document.getElementById('doing-count').textContent = doing;
     const pct = total ? (done / total) * 100 : 0;
     document.getElementById('progress-fill').style.width = pct + '%';
+    const sf = document.getElementById('summary-fill');
+    if (sf) sf.style.width = pct + '%';
   }
 
   function updatePhaseCounts() {
@@ -1825,29 +1900,27 @@ if ('serviceWorker' in navigator) {
 </script>
 
 <script>
-function applyThemeIcon(isDark) {
-  var sun  = document.querySelector('.theme-icon--sun');
-  var moon = document.querySelector('.theme-icon--moon');
-  if (!sun || !moon) return;
-  sun.style.display  = isDark ? '' : 'none';
-  moon.style.display = isDark ? 'none' : '';
-}
-
-window.toggleTheme = function() {
-  var html = document.documentElement;
-  var current = html.getAttribute('data-theme');
-  var isDark = current === 'dark' || (!current && window.matchMedia('(prefers-color-scheme: dark)').matches);
-  var next = isDark ? 'light' : 'dark';
-  html.setAttribute('data-theme', next);
-  localStorage.setItem('ea-theme', next);
-  applyThemeIcon(next === 'dark');
-};
-
-// Set correct icon on first paint
-(function() {
-  var t = document.documentElement.getAttribute('data-theme');
-  var isDark = t === 'dark' || (!t && window.matchMedia('(prefers-color-scheme: dark)').matches);
-  applyThemeIcon(isDark);
+(function initThemeToggle() {
+  var btn = document.getElementById('theme-toggle');
+  if (!btn) return;
+  var SUN_SVG  = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><line x1="12" y1="2" x2="12" y2="5"/><line x1="12" y1="19" x2="12" y2="22"/><line x1="4.22" y1="4.22" x2="6.34" y2="6.34"/><line x1="17.66" y1="17.66" x2="19.78" y2="19.78"/><line x1="2" y1="12" x2="5" y2="12"/><line x1="19" y1="12" x2="22" y2="12"/><line x1="4.22" y1="19.78" x2="6.34" y2="17.66"/><line x1="17.66" y1="6.34" x2="19.78" y2="4.22"/></svg>';
+  var MOON_SVG = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>';
+  function getEffectiveTheme() {
+    var stored = localStorage.getItem('ea-theme');
+    if (stored === 'dark' || stored === 'light') return stored;
+    return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+  }
+  function applyTheme(theme) {
+    document.documentElement.setAttribute('data-theme', theme);
+    localStorage.setItem('ea-theme', theme);
+    btn.innerHTML = theme === 'dark' ? SUN_SVG : MOON_SVG;
+    btn.setAttribute('aria-label', theme === 'dark' ? 'Светла тема' : 'Тъмна тема');
+  }
+  applyTheme(getEffectiveTheme());
+  btn.addEventListener('click', function() {
+    var current = document.documentElement.getAttribute('data-theme') || getEffectiveTheme();
+    applyTheme(current === 'dark' ? 'light' : 'dark');
+  });
 })();
 </script>
 </body>
