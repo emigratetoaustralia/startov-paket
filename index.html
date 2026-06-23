@@ -527,9 +527,12 @@
   }
 
   /* ── Top bar ── */
-  #wizard-top {
+  #sticky-header {
     position: sticky;
     top: 0;
+    z-index: 10;
+  }
+  #wizard-top {
     z-index: 10;
     width: 100%;
     background: #FF8000;
@@ -682,19 +685,21 @@
 
 <!-- =================== APP SHELL =================== -->
 <div class="pwa-shell">
-  <!-- Top bar — spans 100% viewport width -->
-  <div id="wizard-top">
-    <button id="back-btn" class="back-btn" aria-label="Назад" style="visibility:hidden">←</button>
-    <img src="EA.png" alt="EA" class="top-bar-logo">
-    <div id="top-bar-text">
-      <span id="app-title">30 дни в Пърт</span>
-      <span id="app-subtitle">Емигрирай в Австралия</span>
+  <!-- Sticky header: orange bar + progress bar -->
+  <div id="sticky-header">
+    <div id="wizard-top">
+      <button id="back-btn" class="back-btn" aria-label="Назад" style="visibility:hidden">←</button>
+      <img src="EA.png" alt="EA" class="top-bar-logo">
+      <div id="top-bar-text">
+        <span id="app-title">30 дни в Пърт</span>
+        <span id="app-subtitle">Емигрирай в Австралия</span>
+      </div>
+      <button id="theme-toggle" class="theme-toggle" aria-label="Превключи тема"></button>
     </div>
-    <button id="theme-toggle" class="theme-toggle" aria-label="Превключи тема"></button>
-  </div>
-  <!-- Progress bar sits below the orange bar, on the page background -->
-  <div id="progress-bar" role="progressbar" aria-label="Напредък">
-    <div id="progress-fill"></div>
+    <!-- Progress bar glued below the orange bar -->
+    <div id="progress-bar" role="progressbar" aria-label="Напредък">
+      <div id="progress-fill"></div>
+    </div>
   </div>
 
   <main class="pwa-body">
