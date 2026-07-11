@@ -258,7 +258,8 @@
     color: var(--fg-secondary);
     letter-spacing: 0.04em;
   }
-  .arrival-row input[type="date"] {
+  .arrival-row input[type="date"],
+  .arrival-row input[type="text"] {
     padding: var(--space-2) var(--space-3);
     border: 1.5px solid var(--border-default);
     border-radius: var(--radius-sm);
@@ -512,7 +513,7 @@
     body { background: white; font-size: 11pt; }
     .pwa-shell { max-width: 100%; }
     .pwa-body { padding: 0; }
-    #pw-gate, .pwa-header, .arrival-row, .actions, .item-personal-toggle, .data-controls { display: none !important; }
+    #pw-gate, #sticky-header, .arrival-row, .actions, .item-personal-toggle, .data-controls { display: none !important; }
     .phase-body { display: block !important; }
     .phase-toggle-btn { cursor: default; }
     .item-personal.open { display: block !important; }
@@ -697,14 +698,12 @@
       <button id="theme-toggle" class="theme-toggle" aria-label="Превключи тема"></button>
     </div>
     <!-- Progress bar glued below the orange bar -->
-    <div id="progress-bar" role="progressbar" aria-label="Напредък">
+    <div id="progress-bar" role="progressbar" aria-label="Напредък" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
       <div id="progress-fill"></div>
     </div>
   </div>
 
   <main class="pwa-body">
-
-    <input type="hidden" id="buyer-name">
 
     <!-- =================== INTRO =================== -->
     <section class="intro">
@@ -716,6 +715,8 @@
 
     <!-- =================== ARRIVAL DATE =================== -->
     <div class="arrival-row">
+      <label for="buyer-name">Име:</label>
+      <input type="text" id="buyer-name" maxlength="30" placeholder="Как да ти казвам?" autocomplete="name">
       <label for="arrival-date">Кога кацаш в Пърт?</label>
       <input type="date" id="arrival-date">
       <span class="day-counter" id="day-counter"></span>
@@ -1490,9 +1491,19 @@
 
     submitBtn.disabled = true; // prevent double-click during async hash check
 
-    const enteredHash = await sha256(pwInput.value);
+    let enteredHash = '';
+    try {
+      enteredHash = await sha256(pwInput.value);
+    } catch(e) {
+      // crypto.subtle unavailable (non-secure context) — don't leave the button dead
+      errorEl.textContent = 'Браузърът не поддържа проверката. Отвори приложението през https адреса.';
+      errorEl.classList.add('visible');
+      submitBtn.disabled = false;
+      return;
+    }
 
     if (enteredHash !== CORRECT_PASSWORD_HASH) {
+      errorEl.textContent = 'Грешна парола. Провери страницата в Пейтрион, с която получи достъп.';
       errorEl.classList.add('visible');
       pwInput.value = '';
       pwInput.focus();
@@ -1605,7 +1616,30 @@
     reader.onload = function(e) {
       try {
         const imported = JSON.parse(e.target.result);
-        state = Object.assign({ name: '', arrival: '', items: {}, notes: {} }, imported);
+        if (!imported || typeof imported !== 'object' || Array.isArray(imported)) {
+          throw new Error('invalid shape');
+        }
+        const knownIds = Object.values(PHASE_ITEMS).flat();
+        const clean = { name: '', arrival: '', items: {}, notes: {} };
+        if (typeof imported.name === 'string') clean.name = imported.name.slice(0, 30);
+        if (typeof imported.arrival === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(imported.arrival)) {
+          clean.arrival = imported.arrival;
+        }
+        if (imported.items && typeof imported.items === 'object') {
+          knownIds.forEach(id => {
+            if (imported.items[id] === 'doing' || imported.items[id] === 'done') {
+              clean.items[id] = imported.items[id];
+            }
+          });
+        }
+        if (imported.notes && typeof imported.notes === 'object') {
+          knownIds.forEach(id => {
+            if (typeof imported.notes[id] === 'string' && imported.notes[id]) {
+              clean.notes[id] = imported.notes[id];
+            }
+          });
+        }
+        state = clean;
         saveState();
         location.reload();
       } catch(err) {
@@ -1669,7 +1703,7 @@
     const diff = Math.round((today - arrival) / 86400000);
     if (diff < 0) el.textContent = 'остават ' + Math.abs(diff) + ' дни до полета';
     else if (diff === 0) el.textContent = 'днес е денят на пристигане';
-    else if (diff <= 30) el.textContent = 'ден ' + (diff + 1) + ' от 30';
+    else if (diff < 30) el.textContent = 'ден ' + (diff + 1) + ' от 30';
     else el.textContent = 'над 30 дни от пристигането';
   }
 
@@ -1716,7 +1750,7 @@
       const el = document.getElementById('phase-' + p);
       if (!el) continue;
       el.classList.remove('is-active', 'is-done');
-      if (p < active && isPhaseComplete(p)) el.classList.add('is-done');
+      if (isPhaseComplete(p)) el.classList.add('is-done');
       if (p === active) el.classList.add('is-active');
     }
 
@@ -1758,14 +1792,17 @@
     const lbl = document.getElementById('lbl-' + id);
     if (cur === 'doing') {
       btn.classList.add('state-doing'); btn.textContent = '~';
+      btn.setAttribute('aria-label', 'Задача в процес — маркирай като готова');
       if (lbl) lbl.textContent = 'в процес';
       if (itemEl) itemEl.classList.add('doing');
     } else if (cur === 'done') {
       btn.classList.add('state-done'); btn.textContent = '✓';
+      btn.setAttribute('aria-label', 'Задачата е готова — премахни отметката');
       if (lbl) lbl.textContent = 'готово';
       if (itemEl) itemEl.classList.add('done');
     } else {
       btn.textContent = '';
+      btn.setAttribute('aria-label', 'Маркирай задачата като в процес');
       if (lbl) lbl.textContent = '—';
     }
   }
@@ -1821,6 +1858,8 @@
     document.getElementById('doing-count').textContent = doing;
     const pct = total ? (done / total) * 100 : 0;
     document.getElementById('progress-fill').style.width = pct + '%';
+    const bar = document.getElementById('progress-bar');
+    if (bar) bar.setAttribute('aria-valuenow', Math.round(pct));
     const sf = document.getElementById('summary-fill');
     if (sf) sf.style.width = pct + '%';
   }
@@ -1894,7 +1933,9 @@
     if (el) { el.className = 'autosave-status warn'; el.textContent = '⚠ Запази ръчно с бутона'; }
   }
 
-  setInterval(updateDayCounter, 3600000);
+  // Refresh date-driven UI hourly so the day counter and active phase
+  // roll over at midnight without a reload.
+  setInterval(function() { updateDayCounter(); updateActivePhase(); }, 3600000);
 })();
 </script>
 
@@ -1919,16 +1960,21 @@ if ('serviceWorker' in navigator) {
     if (stored === 'dark' || stored === 'light') return stored;
     return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
   }
-  function applyTheme(theme) {
+  function applyTheme(theme, persist) {
     document.documentElement.setAttribute('data-theme', theme);
-    localStorage.setItem('ea-theme', theme);
+    // Persist only explicit choices so the app keeps following the OS
+    // theme until the user actually toggles it.
+    if (persist) { try { localStorage.setItem('ea-theme', theme); } catch(e) {} }
     btn.innerHTML = theme === 'dark' ? SUN_SVG : MOON_SVG;
     btn.setAttribute('aria-label', theme === 'dark' ? 'Светла тема' : 'Тъмна тема');
   }
-  applyTheme(getEffectiveTheme());
+  applyTheme(getEffectiveTheme(), false);
   btn.addEventListener('click', function() {
     var current = document.documentElement.getAttribute('data-theme') || getEffectiveTheme();
-    applyTheme(current === 'dark' ? 'light' : 'dark');
+    applyTheme(current === 'dark' ? 'light' : 'dark', true);
+  });
+  window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function(e) {
+    if (!localStorage.getItem('ea-theme')) applyTheme(e.matches ? 'dark' : 'light', false);
   });
 })();
 </script>

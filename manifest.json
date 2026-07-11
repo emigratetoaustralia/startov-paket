@@ -11,10 +11,22 @@
   "lang": "bg",
   "icons": [
     {
-      "src": "EA.png",
+      "src": "icon.png",
       "sizes": "192x192",
       "type": "image/png",
-      "purpose": "any maskable"
+      "purpose": "any"
+    },
+    {
+      "src": "EA.png",
+      "sizes": "2000x2000",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "EA.png",
+      "sizes": "2000x2000",
+      "type": "image/png",
+      "purpose": "maskable"
     }
   ]
 }
